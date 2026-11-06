@@ -15,11 +15,13 @@ const SPINE = [
 export function MethodPage() {
   return (
     <div class="page narrow">
-      <p class="eyebrow">How Tempo teaches</p>
+      <header class="page-head">
+      <span class="eyebrow">How Tempo teaches</span>
       <h1>Learning that lasts</h1>
-      <p class="lead">
+      <p class="page-lead">
         Tempo borrows four habits from the physicist Richard Feynman, famous for explaining hard ideas simply: start from a real question, explain in plain words, test the explanation by teaching it back, and treat confusion as a map of where to dig.
       </p>
+      </header>
 
       <h2>Every lesson has the same eight steps</h2>
       <ol class="spine">

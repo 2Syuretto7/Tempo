@@ -1,5 +1,6 @@
 import { useState } from 'preact/hooks';
 import { exportProgress, importProgress, resetProgress } from '../engine/progress';
+import { Icon } from '../components/ui';
 import { getTheme, setTheme, type Theme } from '../theme';
 
 export function SettingsPage() {
@@ -24,11 +25,15 @@ export function SettingsPage() {
 
   return (
     <div class="page narrow">
-      <p class="eyebrow">Settings</p>
-      <h1>Settings</h1>
+      <header class="page-head">
+        <span class="eyebrow">Preferences</span>
+        <h1>Settings</h1>
+        <p class="page-lead">Tempo keeps everything in this browser. Nothing is sent anywhere.</p>
+      </header>
 
       <section class="settings-section">
         <h2>Appearance</h2>
+        <div>
         <div class="segmented" role="radiogroup" aria-label="Theme">
           {(['system', 'light', 'dark'] as Theme[]).map((t) => (
             <button
@@ -45,25 +50,29 @@ export function SettingsPage() {
             </button>
           ))}
         </div>
+        </div>
       </section>
 
       <section class="settings-section">
         <h2>Your progress</h2>
+        <div>
         <p>Progress is saved only in this browser. Nothing is sent anywhere. Download a backup now and then, especially before clearing your browser data.</p>
         <div class="row gap">
           <button class="btn btn-primary" onClick={download}>
-            Download a backup
+            <Icon name="download" size={16} /> Download a backup
           </button>
           <label class="btn btn-quiet">
-            Restore from a backup
+            <Icon name="upload" size={16} /> Restore from a backup
             <input type="file" accept="application/json,.json" onChange={upload} hidden />
           </label>
         </div>
         {msg && <p class="feedback feedback-info">{msg}</p>}
+        </div>
       </section>
 
       <section class="settings-section">
         <h2>Start over</h2>
+        <div>
         <p>This erases every lesson, score and review in this browser.</p>
         <button
           class="btn btn-danger"
@@ -74,15 +83,18 @@ export function SettingsPage() {
             }
           }}
         >
-          Erase all progress
+          <Icon name="trash" size={16} /> Erase all progress
         </button>
+        </div>
       </section>
 
       <section class="settings-section">
         <h2>Live AI tutor</h2>
+        <div>
         <p class="muted">
           Coming in a later phase: an optional chat with the Kibitzer about any position, using your own AI key kept only in this browser. It will follow the same rule as today's Kibitzer: hints and questions, never the move.
         </p>
+        </div>
       </section>
     </div>
   );

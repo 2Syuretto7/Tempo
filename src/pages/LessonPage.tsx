@@ -6,7 +6,7 @@ import { LESSON_CONTENT } from '../content/lessons';
 import type { Lesson, Task, WorkedExample } from '../content/types';
 import { TaskRunner } from '../components/TaskRunner';
 import { KibitzerMark } from '../components/Kibitzer';
-import { Icon, Meter, Paragraphs, Rich, Stage } from '../components/ui';
+import { Icon, Meter, Paragraphs, Rich, Ring, Stage } from '../components/ui';
 import { checkExplanation, lessonState, nextLesson, type ExplainVerdict } from '../engine/learning';
 import {
   MASTERY_TO_UNLOCK,
@@ -23,6 +23,7 @@ import { href } from '../router';
 import { NotFound } from './NotFound';
 
 const STEPS = ['Puzzle', 'Theory', 'Worked examples', 'Explain it back', 'Guided practice', 'On your own', 'Bridge', 'Wrap-up'];
+const PHASE_OF = (n: number) => (n < 3 ? 'Discover' : n < 6 ? 'Prove' : 'Connect');
 
 function LessonLink({ id }: { id: string }) {
   const meta = LESSON_META.get(id);
@@ -55,8 +56,11 @@ export function LessonPage({ id }: { id: string }) {
 function InPreparation({ id }: { id: string }) {
   const meta = LESSON_META.get(id)!;
   return (
-    <div class="page narrow">
-      <p class="eyebrow">Lesson {id}</p>
+    <div class="page narrow state-page">
+      <span class="state-icon">
+        <Icon name="pen" size={22} />
+      </span>
+      <span class="eyebrow">Lesson {id} · In preparation</span>
       <h1>{meta.title}</h1>
       <p class="lead">This lesson is being written. Lessons are released course by course so that each one is checked properly before it reaches you.</p>
       <p>
@@ -71,12 +75,16 @@ function InPreparation({ id }: { id: string }) {
 function Locked({ id }: { id: string }) {
   const meta = LESSON_META.get(id)!;
   return (
-    <div class="page narrow">
-      <p class="eyebrow">Lesson {id}</p>
+    <div class="page narrow state-page">
+      <span class="state-icon">
+        <Icon name="lock" size={22} />
+      </span>
+      <span class="eyebrow">Lesson {id} · Locked</span>
       <h1>{meta.title}</h1>
       <p class="lead">
         This lesson opens once you reach {MASTERY_TO_UNLOCK}% mastery in the lessons it builds on. Slow and steady: each idea rests on the one before.
       </p>
+      <span class="eyebrow">Finish these first</span>
       <div class="chips">
         {meta.prereqs.map((p) => (
           <LessonLink key={p} id={p} />
@@ -106,8 +114,11 @@ function Player({ lesson }: { lesson: Lesson }) {
 
   if (isNew && startedToday >= 2 && !paceOk) {
     return (
-      <div class="page narrow">
-        <p class="eyebrow">A note on pace</p>
+      <div class="page narrow state-page">
+        <span class="state-icon">
+          <Icon name="clock" size={22} />
+        </span>
+        <span class="eyebrow">A note on pace</span>
         <h1>You have started two new lessons today</h1>
         <p class="lead">
           Ideas settle best with sleep in between. Tempo suggests at most two new lessons a day, with review first. You can carry on if you are sure; it is your journey.
@@ -130,26 +141,44 @@ function Player({ lesson }: { lesson: Lesson }) {
         <a class="crumb" href={href.course(course.id)}>
           <Icon name="arrow-left" size={16} /> Course {course.id}: {course.title}
         </a>
-        <h1>
-          <span class="lesson-num">{lesson.id}</span> {lesson.title}
-        </h1>
-        <p class="lead">{lesson.summary}</p>
-        <nav class="steps" aria-label="Lesson steps">
-          {STEPS.map((s, i) => (
-            <button
-              key={s}
-              class={`step${i === step ? ' is-current' : ''}${i < furthest ? ' is-done' : ''}`}
-              disabled={i > furthest}
-              onClick={() => go(i)}
-              aria-current={i === step ? 'step' : undefined}
-            >
-              <span class="step-num">{i < furthest ? <Icon name="check" size={13} /> : i + 1}</span>
-              <span class="step-label">{s}</span>
-            </button>
-          ))}
+        <div class="lesson-title">
+          <span class="lesson-kicker">
+            <span class="mono">Lesson {lesson.id}</span>
+            <span aria-hidden="true">·</span>
+            <span>
+              <Icon name="clock" size={14} /> {lesson.minutes} min
+            </span>
+          </span>
+          <h1>{lesson.title}</h1>
+          <p class="lead">{lesson.summary}</p>
+        </div>
+        <nav class="steps" aria-label="Lesson steps" style={{ '--progress': `${(step / (STEPS.length - 1)) * 100}%` } as any}>
+          <div class="steps-mobile" aria-hidden="true">
+            <span>
+              Step {step + 1} of {STEPS.length}
+            </span>
+            <strong>{STEPS[step]}</strong>
+          </div>
+          <ol class="steps-list">
+            {STEPS.map((s, i) => (
+              <li key={s}>
+                <button
+                  class={`step${i === step ? ' is-current' : ''}${i < furthest ? ' is-done' : ''}`}
+                  disabled={i > furthest}
+                  onClick={() => go(i)}
+                  aria-current={i === step ? 'step' : undefined}
+                  aria-label={`Step ${i + 1}: ${s}${i < furthest ? ', done' : ''}`}
+                >
+                  <span class="step-num">{i < furthest ? <Icon name="check" size={12} /> : i + 1}</span>
+                  <span class="step-label">{s}</span>
+                </button>
+              </li>
+            ))}
+          </ol>
         </nav>
       </div>
       <OnFirstVisit lessonId={lesson.id} />
+      <div class="step-body" key={step}>
       {step === 0 && <PuzzleStep lesson={lesson} onDone={() => go(1)} />}
       {step === 1 && <TheoryStep lesson={lesson} onDone={() => go(2)} />}
       {step === 2 && <ExamplesStep lesson={lesson} onDone={() => go(3)} />}
@@ -158,6 +187,7 @@ function Player({ lesson }: { lesson: Lesson }) {
       {step === 5 && <PracticeStep lesson={lesson} kind="independent" onDone={() => go(6)} />}
       {step === 6 && <BridgeStep lesson={lesson} onDone={() => go(7)} />}
       {step === 7 && <WrapUp lesson={lesson} onRetry={() => go(5)} />}
+      </div>
     </div>
   );
 }
@@ -177,7 +207,7 @@ function StepTitle({ n, title, children }: { n: number; title: string; children?
   return (
     <div class="step-title">
       <span class="eyebrow">
-        Step {n + 1} of {STEPS.length}
+        Step {n + 1} of {STEPS.length} <span class="eyebrow-sep" aria-hidden="true" /> {PHASE_OF(n)}
       </span>
       <h2>{title}</h2>
       {children && <div class="step-intro">{children}</div>}
@@ -524,7 +554,13 @@ function WrapUp({ lesson, onRetry }: { lesson: Lesson; onRetry: () => void }) {
       <div class="wrap-grid">
         <div class="card">
           <div class="eyebrow">Mastery</div>
-          <div class="big-number">{Math.max(mastery, p.mastery)}%</div>
+          <div class="mastery">
+            <Ring value={Math.max(mastery, p.mastery)} size={88} label={`Mastery ${Math.max(mastery, p.mastery)}%`} />
+            <div>
+              <div class="big-number">{Math.max(mastery, p.mastery)}%</div>
+              <span class={`tag ${passed || p.mastery >= MASTERY_TO_UNLOCK ? 'tag-good' : 'tag-warn'}`}>{passed || p.mastery >= MASTERY_TO_UNLOCK ? 'Next lesson unlocked' : `${MASTERY_TO_UNLOCK}% needed`}</span>
+            </div>
+          </div>
           <Meter value={Math.max(mastery, p.mastery)} />
           <p class="small muted">
             Guided practice counts for 40% and practice on your own for 60%. Hints and wrong tries lower the score a little. {MASTERY_TO_UNLOCK}% opens the next lesson.
