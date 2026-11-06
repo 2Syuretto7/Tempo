@@ -1,0 +1,195 @@
+import type { Hints, Lesson } from '../types';
+
+const QUIET: Hints = ['', '', '', ''];
+const START = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1';
+
+export const lesson: Lesson = {
+  id: '1.1.5',
+  title: 'The queen',
+  summary: 'The queen moves like a rook and a bishop combined. She is the most powerful piece, which also makes her the piece you can least afford to lose.',
+  minutes: 30,
+  buildsOn: ['1.1.3', '1.1.4'],
+  leadsTo: ['1.1.10', '1.3.2', '1.4.4'],
+  puzzle: {
+    intro: 'You know how the rook and the bishop move. The queen is built from both. Can you predict her reach?',
+    task: {
+      id: 'puzzle',
+      kind: 'squares',
+      prompt: 'Select every square the queen on d4 can reach.',
+      fen: '8/8/8/8/3Q4/8/8/8 w - - 0 1',
+      answer: { reach: 'd4' },
+      hints: [
+        'Picture a rook on d4. Which squares does it reach?',
+        'Now picture a bishop on d4.',
+        'The queen gets both sets of squares.',
+        'The d-file, the 4th rank and both diagonals through d4.',
+      ],
+      explain: 'Rook-like squares (14) plus bishop-like squares (13): 27.',
+    },
+    resolution: 'From d4 the queen reaches 14 squares like a rook and 13 like a bishop, 27 in total: almost half the board.',
+  },
+  theory: [
+    {
+      heading: 'A rook and a bishop in one',
+      body: [
+        'The queen moves **any number of squares along a file, a rank or a diagonal**: eight directions in all. On each move she picks one direction, just as a rook or bishop would.',
+        'She obeys the same blocking rules. Move her around on this free board.',
+      ],
+      board: { fen: '8/8/8/8/3Q4/8/8/8 w - - 0 1', showMoves: 'd4', free: true, caption: 'From d4, 27 squares.' },
+    },
+    {
+      heading: 'Blocked like the others',
+      body: [
+        'The queen cannot jump. Here a white pawn stops her on the e-file, and she can capture the black pieces on b1 and g6 but go no further.',
+        'In the starting position she cannot move at all: every line from d1 is blocked by her own pieces. The most powerful piece begins the game boxed in.',
+      ],
+      board: { fen: '8/8/4P1p1/8/2P1Q3/8/8/1p6 w - - 0 1', showMoves: 'e4', free: true, caption: 'Own pawns on e6 and c4; black pawns on g6 and b1.' },
+    },
+    {
+      heading: 'Great power, great risk',
+      body: [
+        'Because she is so strong, losing the queen for a lesser piece is usually a disaster. Beginners often bring her out early, where she is chased around by cheaper pieces.',
+        'A good habit starts now: **before moving your queen, ask whether any enemy piece can capture her on her new square.** This is the seed of the blunder check you will learn in the course on playing a whole game.',
+      ],
+      board: {
+        fen: '8/8/2n5/8/3Q4/8/8/8 w - - 0 1',
+        arrows: [['c6', 'd4']],
+        caption: 'Even a knight can capture a careless queen.',
+      },
+    },
+  ],
+  examples: [
+    {
+      title: 'Spotting a diagonal capture',
+      fen: '8/8/r7/8/8/8/4Q3/8 w - - 0 1',
+      steps: [
+        { text: 'White\'s queen on e2, a black rook on a6. They do not share a file or a rank.', highlights: ['e2', 'a6'] },
+        { text: 'But try the diagonal: d3, c4, b5, a6. Each step is one file left and one rank up.', highlights: ['d3', 'c4', 'b5', 'a6'] },
+        { text: 'The diagonal is clear, so the queen captures: **Qxa6**.', fen: '8/8/Q7/8/8/8/8/8 b - - 0 1', lastMove: ['e2', 'a6'] },
+      ],
+    },
+    {
+      title: 'Choosing a square for the queen',
+      fen: 'n6n/8/8/8/8/8/8/4Q3 w - - 0 1',
+      steps: [
+        { text: 'Two black knights on a8 and h8. Can one queen move attack both?', highlights: ['a8', 'h8'] },
+        { text: 'A square on the 8th rank between them would look both ways along the rank.', highlights: ['b8', 'c8', 'd8', 'e8', 'f8', 'g8'] },
+        { text: 'Which of those can the queen reach? The e-file is open, so **Qe8**.', fen: 'n3Q2n/8/8/8/8/8/8/8 b - - 0 1', lastMove: ['e1', 'e8'], arrows: [['e8', 'a8'], ['e8', 'h8']] },
+        { text: 'Black can move only one knight away. You will meet this kind of double attack again and again.' },
+      ],
+    },
+  ],
+  explainBack: {
+    prompt: 'Explain how the queen\'s movement relates to the rook\'s and the bishop\'s.',
+    ideas: [
+      { label: 'Like a rook', anyOf: ['rook', 'file', 'rank', 'straight'], followUp: 'Which straight-line piece does the queen copy?' },
+      { label: 'Like a bishop', anyOf: ['bishop', 'diagonal'], followUp: 'Which slanting-line piece does she copy too?' },
+      { label: 'Both together', anyOf: ['both', 'combine', 'combined', 'together', 'plus', 'as well', 'and a'], followUp: 'Does she pick one of them, or have both at once?' },
+    ],
+    minIdeas: 2,
+    model: 'The queen combines the rook and the bishop: on any move she can go any distance along a file or rank like a rook, or along a diagonal like a bishop.',
+  },
+  guided: [
+    {
+      id: 'g1',
+      kind: 'squares',
+      prompt: 'Select every square the queen can reach.',
+      fen: '8/8/8/8/8/8/8/Q7 w - - 0 1',
+      answer: { reach: 'a1' },
+      hints: ['Think rook first, then bishop.', 'From the corner, a rook gets 14 squares.', 'And a bishop in the corner gets how many?', 'The a-file, the 1st rank and the long diagonal.'],
+      explain: '14 rook-like squares plus 7 on the long diagonal: 21.',
+    },
+    {
+      id: 'g2',
+      kind: 'squares',
+      prompt: 'Select every square the queen can reach, including captures.',
+      fen: '8/8/4P1p1/8/2P1Q3/8/8/1p6 w - - 0 1',
+      answer: { reach: 'e4' },
+      hints: ['Check all eight directions one by one.', 'Two blockers are white and two are black.', 'Own pieces stop her before; enemy pieces may be captured.', 'Do not forget the diagonal down to the left.'],
+      explain: 'Her own pawns cut the e-file at e6 and the rank at c4. She may capture on g6 and b1.',
+    },
+    {
+      id: 'g3',
+      kind: 'move',
+      prompt: 'Capture the black rook with the queen.',
+      fen: '8/3r4/7n/8/8/8/3Q4/8 w - - 0 1',
+      accept: ['d2d7'],
+      refute: { d2h6: 'That captures the knight. The rook was also within reach.' },
+      wrong: 'That does not capture the rook.',
+      hints: ['Where is the rook?', 'Does it share a line with the queen?', 'Look straight up the d-file.', 'Is anything between d2 and d7?'],
+      explain: 'The d-file from d3 to d6 is empty, so Qxd7 wins the rook.',
+    },
+    {
+      id: 'g4',
+      kind: 'move',
+      prompt: 'Move the queen to a square where she attacks both black knights.',
+      fen: 'n6n/8/8/8/8/8/8/4Q3 w - - 0 1',
+      accept: ['e1e8'],
+      hints: ['What line joins the two knights?', 'A square on that line between them would see both.', 'Which of those squares can the queen reach from e1?', 'Go straight up.'],
+      explain: 'On e8 she looks left to a8 and right to h8 along the empty 8th rank.',
+    },
+    {
+      id: 'g5',
+      kind: 'choice',
+      prompt: 'In the starting position, how many moves does the white queen have?',
+      fen: START,
+      highlights: ['d1'],
+      options: [{ text: '0', correct: true }, { text: '2' }, { text: '7' }, { text: '27' }],
+      hints: ['What is next to the queen on d1?', 'Look at every direction: up, sideways and diagonal.', 'Can she capture her own pieces?', 'Every neighbouring square is occupied by a white piece.'],
+      explain: 'None. The king, the bishop and three pawns surround her, and all are White\'s.',
+    },
+  ],
+  independent: [
+    {
+      id: 'i1',
+      kind: 'squares',
+      prompt: 'Select every square the queen can reach.',
+      fen: '8/6Q1/8/6P1/8/2b5/8/8 w - - 0 1',
+      answer: { reach: 'g7' },
+      hints: QUIET,
+      explain: 'The g-file is cut at g5 by her own pawn. Down the long diagonal she can capture on c3.',
+    },
+    {
+      id: 'i2',
+      kind: 'move',
+      prompt: 'Capture the black queen.',
+      fen: '8/5q2/1p6/8/8/1Q6/8/8 w - - 0 1',
+      accept: ['b3f7'],
+      refute: { b3b6: 'That wins a pawn, but the queen was there to be captured.' },
+      hints: QUIET,
+      explain: 'The diagonal c4, d5, e6 is empty, so Qxf7 wins the black queen.',
+    },
+    {
+      id: 'i3',
+      kind: 'move',
+      prompt: 'Attack both black knights with one queen move.',
+      fen: '8/8/8/n6n/8/5P2/8/3Q4 w - - 0 1',
+      accept: ['d1d5'],
+      hints: QUIET,
+      explain: 'On d5 the queen looks along the 5th rank at both knights. Neither knight can reach d5 to capture her.',
+    },
+    {
+      id: 'i4',
+      kind: 'choice',
+      prompt: 'A queen on h1, a white pawn on h4, and nothing else. How many squares can the queen reach?',
+      fen: '8/8/8/8/7P/8/8/7Q w - - 0 1',
+      options: [{ text: '14' }, { text: '16', correct: true }, { text: '17' }, { text: '21' }],
+      hints: QUIET,
+      explain: 'Up the h-file: h2, h3 (2). Along the 1st rank: 7. Along the long diagonal to a8: 7. Total 16.',
+    },
+  ],
+  bridge: {
+    text: 'Three line-movers are now yours. Before the two short-range pieces, the king and the knight, check that you can choose between them.',
+    task: {
+      id: 'bridge',
+      kind: 'move',
+      prompt: 'Rook, bishop or queen: capture the black rook on g6 with the piece that can.',
+      fen: '8/8/2Q1p1r1/8/8/6P1/8/1B4R1 w - - 0 1',
+      accept: ['b1g6'],
+      wrong: 'That move does not capture the rook on g6.',
+      hints: ['Three pieces, three lines toward g6. Trace each one.', 'The rook\'s file and the queen\'s rank both have something in the way.', 'What about the long diagonal?', 'Follow the bishop\'s line from b1.'],
+      explain: 'The rook is blocked by its own pawn on g3 and the queen by the black pawn on e6. The bishop\'s diagonal c2, d3, e4, f5 is clear.',
+    },
+  },
+  reviewSeeds: ['g2', 'g4', 'i3'],
+};
