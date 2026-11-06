@@ -1,5 +1,6 @@
 import type { ComponentChildren } from 'preact';
 import type { Hints } from '../content/types';
+import { Icon } from './ui';
 
 const RUNG_NAMES = ['Notice', 'Focus', 'Idea', 'Narrow'];
 
@@ -15,9 +16,10 @@ export function KibitzerMark({ size = 34 }: { size?: number }) {
   // An onlooker's eye: the Kibitzer watches and asks, never plays.
   return (
     <svg viewBox="0 0 34 34" width={size} height={size} aria-hidden="true" class="kibitzer-mark">
-      <circle cx="17" cy="17" r="16" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5" />
-      <path d="M7.5 17 C10.5 11.5 23.5 11.5 26.5 17 C23.5 22.5 10.5 22.5 7.5 17 Z" fill="none" stroke="var(--accent)" stroke-width="1.6" />
-      <circle cx="17" cy="17" r="3.3" fill="var(--accent)" />
+      <rect x="0.5" y="0.5" width="33" height="33" rx="10" fill="var(--accent-soft)" />
+      <path d="M7.5 17 C10.5 11.5 23.5 11.5 26.5 17 C23.5 22.5 10.5 22.5 7.5 17 Z" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round" />
+      <circle cx="17" cy="17" r="3.6" fill="var(--accent)" />
+      <circle cx="18.2" cy="15.8" r="1" fill="var(--surface)" />
     </svg>
   );
 }
@@ -42,6 +44,13 @@ export function Kibitzer({ hints, rungs, onRung, quiet, solved, seed = 0, childr
           <div class="kibitzer-name">The Kibitzer</div>
           <div class="kibitzer-role">Asks questions. Never gives the move.</div>
         </div>
+        {hasHints && (
+          <span class="rung-meter" aria-label={`${rungs} of 4 hints used`}>
+            {[0, 1, 2, 3].map((k) => (
+              <span key={k} class={k < rungs ? 'is-on' : ''} />
+            ))}
+          </span>
+        )}
       </header>
       {quiet ? (
         <p class="kibitzer-say">I am staying quiet for this one. This is where you prove to yourself that the idea is yours.</p>
@@ -55,7 +64,9 @@ export function Kibitzer({ hints, rungs, onRung, quiet, solved, seed = 0, childr
         <ol class="hint-ladder">
           {hints.slice(0, rungs).map((h, i) => (
             <li key={i} class="hint">
-              <span class="hint-rung">{RUNG_NAMES[i]}</span>
+              <span class="hint-rung">
+                <span class="mono">{i + 1}</span> {RUNG_NAMES[i]}
+              </span>
               <span>{h}</span>
             </li>
           ))}
@@ -63,7 +74,7 @@ export function Kibitzer({ hints, rungs, onRung, quiet, solved, seed = 0, childr
       )}
       {hasHints && !solved && rungs < 4 && (
         <button class="btn btn-quiet btn-small kibitzer-btn" onClick={onRung}>
-          Help me think <span class="muted">({rungs + 1} of 4)</span>
+          <Icon name="bulb" size={16} /> Help me think <span class="muted">({rungs + 1} of 4)</span>
         </button>
       )}
       {hasHints && !solved && rungs >= 4 && <p class="kibitzer-note">That is my last hint. The answer is yours to find; there is no reveal button here.</p>}

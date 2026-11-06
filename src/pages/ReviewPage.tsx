@@ -17,7 +17,7 @@ export function ReviewPage() {
   if (!queue.length) {
     return (
       <div class="page narrow">
-        <p class="eyebrow">Review</p>
+        <span class="eyebrow">Review</span>
         <h1>Nothing due today</h1>
         <p class="lead">
           {total
@@ -34,7 +34,7 @@ export function ReviewPage() {
   if (i >= queue.length) {
     return (
       <div class="page narrow">
-        <p class="eyebrow">Review</p>
+        <span class="eyebrow">Review</span>
         <h1>Review complete</h1>
         <p class="lead">{queue.length} tasks reviewed. The ones you found easy will wait longer before coming back; the hard ones return tomorrow.</p>
         <a class="btn btn-primary" href={href.home}>
@@ -50,9 +50,9 @@ export function ReviewPage() {
   return (
     <div class="lesson">
       <div class="lesson-head">
-        <p class="eyebrow">
+        <span class="eyebrow">
           Review · {i + 1} of {queue.length}
-        </p>
+        </span>
         <h1>From lesson {card.lessonId}: {meta?.title}</h1>
       </div>
       <TaskRunner

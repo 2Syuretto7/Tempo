@@ -158,7 +158,7 @@ export function Board(props: BoardProps) {
   for (let r = 8; r >= 1; r--) for (const f of FILES) squares.push(f + r);
 
   return (
-    <div class={`board-wrap${interactive ? ' is-interactive' : ''}`}>
+    <div class={`board-wrap board-${mode}${interactive ? ' is-interactive' : ''}`}>
       <svg
         ref={svgRef}
         viewBox="0 0 800 800"
@@ -181,8 +181,8 @@ export function Board(props: BoardProps) {
           return (
             <g key={sq}>
               <rect x={x} y={y} width={S} height={S} class={dark ? 'sq-dark' : 'sq-light'} />
-              {isLast && <rect x={x} y={y} width={S} height={S} class="sq-last" />}
-              {props.highlights?.includes(sq) && <rect x={x} y={y} width={S} height={S} class="sq-highlight" />}
+              {isLast && <rect x={x} y={y} width={S} height={S} class={`sq-last ${dark ? 'on-dark' : 'on-light'}`} />}
+              {props.highlights?.includes(sq) && <rect x={x} y={y} width={S} height={S} class={`sq-highlight ${dark ? 'on-dark' : 'on-light'}`} />}
               {mark && <rect x={x + 3} y={y + 3} width={S - 6} height={S - 6} rx="6" class={`sq-mark sq-mark-${mark}`} />}
               {selected === sq && <rect x={x} y={y} width={S} height={S} class="sq-selected" />}
             </g>
@@ -195,7 +195,7 @@ export function Board(props: BoardProps) {
             const { x, y } = xy(sq);
             const dark = (fileIndex(sq) + rankOf(sq)) % 2 === 1;
             return (
-              <text key={`f${sq}`} x={x + S - 8} y={y + S - 8} text-anchor="end" class={`coord ${dark ? 'coord-on-dark' : 'coord-on-light'}`}>
+              <text key={`f${sq}`} x={x + S - 7} y={y + S - 7} text-anchor="end" class={`coord ${dark ? 'coord-on-dark' : 'coord-on-light'}`}>
                 {sq[0]}
               </text>
             );
@@ -206,7 +206,7 @@ export function Board(props: BoardProps) {
             const { x, y } = xy(sq);
             const dark = (fileIndex(sq) + rankOf(sq)) % 2 === 1;
             return (
-              <text key={`r${sq}`} x={x + 7} y={y + 22} class={`coord ${dark ? 'coord-on-dark' : 'coord-on-light'}`}>
+              <text key={`r${sq}`} x={x + 6} y={y + 19} class={`coord ${dark ? 'coord-on-dark' : 'coord-on-light'}`}>
                 {sq[1]}
               </text>
             );
@@ -214,7 +214,7 @@ export function Board(props: BoardProps) {
         {[...pos.board.entries()].map(([sq, p]) => {
           const { x, y } = xy(sq);
           return (
-            <g key={`p${sq}`} transform={`translate(${x + 5} ${y + 5}) scale(${(S - 10) / 45})`} class="piece">
+            <g key={`p${sq}`} transform={`translate(${x + 3} ${y + 3}) scale(${(S - 6) / 45})`} class="piece">
               <PieceGlyph type={p.type} color={p.color} />
             </g>
           );
@@ -225,7 +225,7 @@ export function Board(props: BoardProps) {
           return occupied ? (
             <circle key={`d${sq}${i}`} cx={x + S / 2} cy={y + S / 2} r={S / 2 - 5} class="dot-ring" />
           ) : (
-            <circle key={`d${sq}${i}`} cx={x + S / 2} cy={y + S / 2} r={13} class="dot" />
+            <circle key={`d${sq}${i}`} cx={x + S / 2} cy={y + S / 2} r={14} class="dot" />
           );
         })}
         {props.arrows?.map(([a, b], i) => {
@@ -272,7 +272,9 @@ export function Board(props: BoardProps) {
       </svg>
       {mode === 'free' && (
         <div class="board-tools">
-          <span class="board-hint">Free board: move any piece to test the idea.</span>
+          <span class="board-hint">
+            <span class="live-dot" aria-hidden="true" /> Free board: move any piece to test the idea.
+          </span>
           <button
             class="btn btn-quiet btn-small"
             onClick={() => {
