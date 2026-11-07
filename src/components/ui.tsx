@@ -71,11 +71,10 @@ export function Logo({ size = 28 }: { size?: number }) {
   // A metronome: steady tempo, one beat at a time.
   return (
     <svg viewBox="0 0 32 32" width={size} height={size} aria-hidden="true" class="logo-mark">
-      <rect width="32" height="32" rx="8" fill="var(--brand)" />
-      <path d="M9.5 25.5 L13.2 7.5 H18.8 L22.5 25.5 Z" fill="none" stroke="var(--brand-ink)" stroke-width="2" stroke-linejoin="round" />
-      <path d="M16 22 L21.6 10" stroke="var(--brand-ink)" stroke-width="2" stroke-linecap="round" />
-      <rect x="18.1" y="13.6" width="4.2" height="3" rx="1" transform="rotate(25 20.2 15.1)" fill="var(--brand-ink)" />
-      <path d="M11.4 21.5 H20.6" stroke="var(--brand-ink)" stroke-width="2" stroke-linecap="round" />
+      <rect x="1" y="1" width="30" height="30" fill="#b58863" />
+      <rect x="1" y="1" width="15" height="15" fill="#f0d9b5" />
+      <rect x="16" y="16" width="15" height="15" fill="#f0d9b5" />
+      <rect x="1" y="1" width="30" height="30" fill="none" stroke="var(--ink)" stroke-width="2" />
     </svg>
   );
 }

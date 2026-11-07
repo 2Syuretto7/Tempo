@@ -195,18 +195,18 @@ export function Board(props: BoardProps) {
             const { x, y } = xy(sq);
             const dark = (fileIndex(sq) + rankOf(sq)) % 2 === 1;
             return (
-              <text key={`f${sq}`} x={x + S - 7} y={y + S - 7} text-anchor="end" class={`coord ${dark ? 'coord-on-dark' : 'coord-on-light'}`}>
+              <text key={`f${sq}`} x={x + 6} y={y + S - 6} class={`coord ${dark ? 'coord-on-dark' : 'coord-on-light'}`}>
                 {sq[0]}
               </text>
             );
           })}
         {squares
-          .filter((sq) => (orientation === 'white' ? sq[0] === 'a' : sq[0] === 'h'))
+          .filter((sq) => (orientation === 'white' ? sq[0] === 'h' : sq[0] === 'a'))
           .map((sq) => {
             const { x, y } = xy(sq);
             const dark = (fileIndex(sq) + rankOf(sq)) % 2 === 1;
             return (
-              <text key={`r${sq}`} x={x + 6} y={y + 19} class={`coord ${dark ? 'coord-on-dark' : 'coord-on-light'}`}>
+              <text key={`r${sq}`} x={x + S - 6} y={y + 22} text-anchor="end" class={`coord ${dark ? 'coord-on-dark' : 'coord-on-light'}`}>
                 {sq[1]}
               </text>
             );
