@@ -1,170 +1,153 @@
 /* ==========================================================================
-   Tempo design system
-   A quiet, editorial study room: warm neutrals, ink-dark type, one deep
-   green brand colour and a brass accent for the board.
+   Tempo design system: "Chessboard"
+   A flat, traditional look taken from the classic wooden board: cream and
+   walnut squares for surfaces, black and white pieces for actions and type,
+   square corners, hairline rules and no drop shadows. The page reads like a
+   well-kept score sheet laid beside the board.
    ========================================================================== */
 
 :root {
-  /* Neutrals */
-  --bg: #f8f7f3;
-  --bg-2: #f1efe8;
-  --surface: #ffffff;
-  --surface-2: #f4f2ec;
-  --surface-3: #ebe8df;
-  --ink: #121417;
-  --ink-2: #464b53;
-  --ink-3: #737882;
-  --ink-4: #a3a7ae;
-  --line: #e6e2d8;
-  --line-2: #d6d1c4;
+  /* Board: the two squares everything else is derived from */
+  --sq-light: #f0d9b5;
+  --sq-dark: #b58863;
 
-  /* Brand */
-  --brand: #0f5c52;
-  --brand-ink: #f4efe2;
-  --accent: #0f6b5f;
-  --accent-strong: #0b5148;
-  --accent-ink: #ffffff;
-  --accent-soft: #e3efea;
-  --accent-line: #b9d6cc;
-  --brass: #a8752a;
-  --brass-soft: #f6ecd9;
+  /* Paper and wood neutrals */
+  --bg: #faf4ea;
+  --bg-2: #f4e9d6;
+  --surface: #fffcf6;
+  --surface-2: #f8efe0;
+  --surface-3: #f0e2cb;
+  --ink: #1b1612;
+  --ink-2: #4b4036;
+  --ink-3: #76695c;
+  --ink-4: #a8998a;
+  --line: #e7d7bd;
+  --line-2: #d3bc98;
+
+  /* Pieces: black and white carry the actions */
+  --brand: #1b1612;
+  --brand-ink: #f0d9b5;
+  --btn-solid: #1b1612;
+  --btn-solid-hover: #3a2f26;
+  --btn-solid-ink: #fffcf6;
+
+  /* Walnut accent, dark enough for text on paper */
+  --accent: #8a5a33;
+  --accent-strong: #6b4323;
+  --accent-ink: #fffcf6;
+  --accent-soft: #f4e4cd;
+  --accent-line: #dcc099;
 
   /* Status */
-  --good: #1f7a4a;
-  --good-soft: #e4f2e9;
-  --bad: #b23a32;
-  --bad-soft: #f9e5e2;
-  --info: #7a5a17;
-  --info-soft: #f7efdc;
+  --good: #3d7536;
+  --good-soft: #e7efd8;
+  --bad: #a8382c;
+  --bad-soft: #f7e1da;
+  --info: #85621a;
+  --info-soft: #f6ead0;
 
-  /* Board */
-  --sq-light: #ebe5d6;
-  --sq-dark: #7b9a8c;
-  --board-arrow: rgba(201, 120, 34, 0.86);
-  --sq-last-light: #f1dc94;
-  --sq-last-dark: #c9b866;
-  --sq-hl-light: #f3d27a;
-  --sq-hl-dark: #d6b551;
-  --board-select: rgba(15, 107, 95, 0.42);
-  --board-last: rgba(226, 184, 72, 0.42);
-  --board-highlight: rgba(226, 184, 72, 0.5);
-  --board-dot: rgba(18, 20, 23, 0.26);
-  --board-edge: rgba(18, 20, 23, 0.12);
-  --piece-light: #fbfaf6;
-  --piece-light-edge: #1d2024;
-  --piece-dark: #24272c;
-  --piece-dark-edge: #0b0c0e;
-  --piece-dark-detail: #c9c4b8;
+  /* Board overlays */
+  --sq-last-light: #f2e38c;
+  --sq-last-dark: #d2b25c;
+  --sq-hl-light: #dfe2a0;
+  --sq-hl-dark: #a9a65e;
+  --board-select: rgba(56, 102, 46, 0.45);
+  --board-arrow: rgba(27, 22, 18, 0.72);
+  --board-dot: rgba(27, 22, 18, 0.24);
+  --board-frame: #1b1612;
+  --piece-light: #ffffff;
+  --piece-light-edge: #111111;
+  --piece-dark: #111111;
+  --piece-dark-edge: #000000;
+  --piece-dark-detail: #f4efe6;
 
-  /* Elevation */
-  --shadow-xs: 0 1px 2px rgba(18, 20, 23, 0.05);
-  --shadow-sm: 0 1px 2px rgba(18, 20, 23, 0.05), 0 2px 8px rgba(18, 20, 23, 0.04);
-  --shadow: 0 1px 2px rgba(18, 20, 23, 0.04), 0 8px 24px -6px rgba(18, 20, 23, 0.1);
-  --shadow-lg: 0 2px 4px rgba(18, 20, 23, 0.04), 0 24px 60px -16px rgba(18, 20, 23, 0.22);
-  --ring: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
+  /* Checker strips (hero, footer, phases) read --cs for their square size. */
 
-  /* Shape and rhythm */
-  --r-xs: 6px;
-  --r-sm: 8px;
-  --r: 12px;
-  --r-lg: 16px;
-  --r-xl: 22px;
+  /* Shape and rhythm: square corners, like the board */
+  --r-xs: 2px;
+  --r-sm: 3px;
+  --r: 4px;
+  --r-lg: 4px;
+  --border: 1px solid var(--line);
+  --border-strong: 1px solid var(--line-2);
+  --ring: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent);
   --container: 1180px;
   --gutter: 24px;
   --topbar-h: 64px;
 
   /* Type */
-  --font-display: 'Newsreader', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
-  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --font-display: 'Staatliches', 'Oswald', 'Arial Narrow', Impact, sans-serif;
+  --font-sans: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Noto Sans Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
   color-scheme: light;
 }
 
+/* Dark: the same board in a walnut room */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --bg: #0d1012;
-    --bg-2: #111517;
-    --surface: #151a1d;
-    --surface-2: #1b2125;
-    --surface-3: #232a2f;
-    --ink: #eceae4;
-    --ink-2: #b9b8b1;
-    --ink-3: #8b8c88;
-    --ink-4: #5f625f;
-    --line: #242b30;
-    --line-2: #323a40;
-    --brand: #1d7a6c;
-    --brand-ink: #f4efe2;
-    --accent: #4fc0a8;
-    --accent-strong: #74d3be;
-    --accent-ink: #062019;
-    --accent-soft: rgba(79, 192, 168, 0.13);
-    --accent-line: rgba(79, 192, 168, 0.35);
-    --brass: #d9aa5c;
-    --brass-soft: rgba(217, 170, 92, 0.13);
-    --good: #6bc993;
-    --good-soft: rgba(107, 201, 147, 0.13);
-    --bad: #f08a80;
-    --bad-soft: rgba(240, 138, 128, 0.13);
-    --info: #e3c27e;
-    --info-soft: rgba(227, 194, 126, 0.12);
-    --sq-light: #cfc8b7;
-    --sq-dark: #5f8174;
-    --sq-last-light: #d9c784;
-    --sq-last-dark: #a39a55;
-    --sq-hl-light: #dfc06c;
-    --sq-hl-dark: #b39a45;
-    --board-dot: rgba(10, 12, 14, 0.34);
-    --board-edge: rgba(0, 0, 0, 0.4);
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 28px -8px rgba(0, 0, 0, 0.5);
-    --shadow-lg: 0 2px 4px rgba(0, 0, 0, 0.3), 0 28px 70px -18px rgba(0, 0, 0, 0.7);
+    --bg: #16110d;
+    --bg-2: #1c1611;
+    --surface: #221a14;
+    --surface-2: #2a2119;
+    --surface-3: #352a20;
+    --ink: #f4e8d4;
+    --ink-2: #d2c0a5;
+    --ink-3: #a08d76;
+    --ink-4: #6f604f;
+    --line: #3a2e24;
+    --line-2: #4f3f30;
+    --brand: #f0d9b5;
+    --brand-ink: #1b1612;
+    --btn-solid: #f4e8d4;
+    --btn-solid-hover: #ffffff;
+    --btn-solid-ink: #1b1612;
+    --accent: #e2b682;
+    --accent-strong: #f0cb9b;
+    --accent-ink: #1b1612;
+    --accent-soft: rgba(226, 182, 130, 0.12);
+    --accent-line: rgba(226, 182, 130, 0.34);
+    --good: #9fd08d;
+    --good-soft: rgba(159, 208, 141, 0.12);
+    --bad: #f2917f;
+    --bad-soft: rgba(242, 145, 127, 0.12);
+    --info: #e8c77f;
+    --info-soft: rgba(232, 199, 127, 0.12);
+    --board-frame: #0b0806;
     color-scheme: dark;
   }
 }
 
 :root[data-theme='dark'] {
-  --bg: #0d1012;
-  --bg-2: #111517;
-  --surface: #151a1d;
-  --surface-2: #1b2125;
-  --surface-3: #232a2f;
-  --ink: #eceae4;
-  --ink-2: #b9b8b1;
-  --ink-3: #8b8c88;
-  --ink-4: #5f625f;
-  --line: #242b30;
-  --line-2: #323a40;
-  --brand: #1d7a6c;
-  --brand-ink: #f4efe2;
-  --accent: #4fc0a8;
-  --accent-strong: #74d3be;
-  --accent-ink: #062019;
-  --accent-soft: rgba(79, 192, 168, 0.13);
-  --accent-line: rgba(79, 192, 168, 0.35);
-  --brass: #d9aa5c;
-  --brass-soft: rgba(217, 170, 92, 0.13);
-  --good: #6bc993;
-  --good-soft: rgba(107, 201, 147, 0.13);
-  --bad: #f08a80;
-  --bad-soft: rgba(240, 138, 128, 0.13);
-  --info: #e3c27e;
-  --info-soft: rgba(227, 194, 126, 0.12);
-  --sq-light: #cfc8b7;
-  --sq-dark: #5f8174;
-  --sq-last-light: #d9c784;
-  --sq-last-dark: #a39a55;
-  --sq-hl-light: #dfc06c;
-  --sq-hl-dark: #b39a45;
-  --board-dot: rgba(10, 12, 14, 0.34);
-  --board-edge: rgba(0, 0, 0, 0.4);
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 28px -8px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 2px 4px rgba(0, 0, 0, 0.3), 0 28px 70px -18px rgba(0, 0, 0, 0.7);
+  --bg: #16110d;
+  --bg-2: #1c1611;
+  --surface: #221a14;
+  --surface-2: #2a2119;
+  --surface-3: #352a20;
+  --ink: #f4e8d4;
+  --ink-2: #d2c0a5;
+  --ink-3: #a08d76;
+  --ink-4: #6f604f;
+  --line: #3a2e24;
+  --line-2: #4f3f30;
+  --brand: #f0d9b5;
+  --brand-ink: #1b1612;
+  --btn-solid: #f4e8d4;
+  --btn-solid-hover: #ffffff;
+  --btn-solid-ink: #1b1612;
+  --accent: #e2b682;
+  --accent-strong: #f0cb9b;
+  --accent-ink: #1b1612;
+  --accent-soft: rgba(226, 182, 130, 0.12);
+  --accent-line: rgba(226, 182, 130, 0.34);
+  --good: #9fd08d;
+  --good-soft: rgba(159, 208, 141, 0.12);
+  --bad: #f2917f;
+  --bad-soft: rgba(242, 145, 127, 0.12);
+  --info: #e8c77f;
+  --info-soft: rgba(232, 199, 127, 0.12);
+  --board-frame: #0b0806;
   color-scheme: dark;
 }
 
@@ -188,14 +171,14 @@ body {
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.6;
-  font-feature-settings: 'cv11', 'ss01', 'ss03';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--accent) 24%, transparent);
+  background: var(--sq-light);
+  color: #1b1612;
 }
 
 h1,
@@ -203,25 +186,24 @@ h2,
 h3,
 .h3 {
   font-family: var(--font-display);
-  font-weight: 500;
-  line-height: 1.12;
-  letter-spacing: -0.015em;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
   margin: 0 0 0.5em;
   color: var(--ink);
   text-wrap: balance;
 }
 
 h1 {
-  font-size: clamp(2rem, 1.4rem + 2.2vw, 2.85rem);
-  letter-spacing: -0.022em;
+  font-size: clamp(2.2rem, 1.6rem + 2.4vw, 3.2rem);
 }
 h2 {
-  font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+  font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.2rem);
 }
 h3,
 .h3 {
-  font-size: 1.3rem;
-  letter-spacing: -0.01em;
+  font-size: 1.4rem;
+  letter-spacing: 0.015em;
 }
 
 p {
@@ -239,7 +221,7 @@ a:hover {
 }
 
 strong {
-  font-weight: 600;
+  font-weight: 650;
 }
 
 em {
@@ -248,15 +230,13 @@ em {
 
 .mono {
   font-family: var(--font-mono);
-  font-weight: 500;
-  font-size: 0.88em;
-  letter-spacing: -0.01em;
-  font-feature-settings: normal;
+  font-weight: 600;
+  font-size: 0.86em;
 }
 
 .num {
   color: var(--ink-3);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .muted {
@@ -271,17 +251,16 @@ em {
   align-items: center;
   gap: 8px;
   font-family: var(--font-sans);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.09em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ink-3);
+  color: var(--accent);
   margin: 0 0 0.75rem;
 }
 .eyebrow-sep {
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
+  width: 5px;
+  height: 5px;
   background: currentColor;
   opacity: 0.6;
 }
@@ -295,16 +274,14 @@ em {
 }
 
 .display {
-  font-size: clamp(2.6rem, 1.6rem + 4.2vw, 4.6rem);
-  line-height: 1.02;
-  letter-spacing: -0.035em;
-  font-weight: 450;
-  margin-bottom: 0.4em;
+  font-size: clamp(3rem, 1.8rem + 5vw, 5.6rem);
+  line-height: 0.95;
+  letter-spacing: 0.005em;
+  margin-bottom: 0.35em;
 }
 .display em {
+  font-style: normal;
   color: var(--accent);
-  font-style: italic;
-  font-weight: 400;
 }
 
 .row {
@@ -324,17 +301,15 @@ em {
 .skip:focus {
   left: 16px;
   top: 12px;
-  background: var(--surface);
-  color: var(--ink);
+  background: var(--btn-solid);
+  color: var(--btn-solid-ink);
   padding: 10px 14px;
   border-radius: var(--r-sm);
-  box-shadow: var(--shadow);
 }
 
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
-  border-radius: 4px;
 }
 
 .container {
@@ -343,12 +318,13 @@ em {
   padding: 0 var(--gutter);
 }
 
-/* ---------- Buttons ---------- */
+/* ---------- Buttons ----------
+   Primary is the black piece, secondary the white piece. */
 
 .btn {
   --btn-bg: var(--surface);
   --btn-fg: var(--ink);
-  --btn-bd: var(--line-2);
+  --btn-bd: var(--ink);
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -357,19 +333,17 @@ em {
   min-height: 42px;
   padding: 0 18px;
   border-radius: var(--r-sm);
-  border: 1px solid var(--btn-bd);
+  border: 1.5px solid var(--btn-bd);
   background: var(--btn-bg);
   color: var(--btn-fg);
   font: inherit;
-  font-weight: 550;
+  font-weight: 650;
   font-size: 0.9375rem;
-  letter-spacing: -0.005em;
   line-height: 1;
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
-  box-shadow: var(--shadow-xs);
-  transition: background-color 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease), box-shadow 0.16s var(--ease), transform 0.08s var(--ease);
+  transition: background-color 0.14s var(--ease), border-color 0.14s var(--ease), color 0.14s var(--ease);
 }
 .btn:hover {
   color: var(--btn-fg);
@@ -378,57 +352,57 @@ em {
   transform: translateY(1px);
 }
 .btn:disabled {
-  opacity: 0.45;
+  opacity: 0.4;
   cursor: not-allowed;
-  box-shadow: none;
 }
 .btn .icon {
   flex: none;
-  transition: transform 0.18s var(--ease);
+  transition: transform 0.16s var(--ease);
 }
 .btn:hover:not(:disabled) .icon:last-child:not(:first-child) {
   transform: translateX(2px);
 }
 .btn-primary {
-  --btn-bg: var(--accent);
-  --btn-fg: var(--accent-ink);
-  --btn-bd: transparent;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset, 0 1px 2px rgba(10, 40, 34, 0.25), 0 4px 12px -4px color-mix(in srgb, var(--accent) 60%, transparent);
+  --btn-bg: var(--btn-solid);
+  --btn-fg: var(--btn-solid-ink);
+  --btn-bd: var(--btn-solid);
 }
 .btn-primary:hover:not(:disabled) {
-  --btn-bg: var(--accent-strong);
+  --btn-bg: var(--btn-solid-hover);
+  --btn-bd: var(--btn-solid-hover);
 }
-.btn-secondary,
+.btn-secondary:hover:not(:disabled) {
+  --btn-bg: var(--sq-light);
+  --btn-fg: #1b1612;
+}
 .btn-quiet {
-  --btn-bg: var(--surface);
+  --btn-bd: var(--line-2);
 }
-.btn-secondary:hover:not(:disabled),
 .btn-quiet:hover:not(:disabled) {
-  --btn-bd: var(--ink-4);
+  --btn-bd: var(--ink);
   --btn-bg: var(--surface-2);
 }
 .btn-ghost {
   --btn-bg: transparent;
   --btn-bd: transparent;
-  box-shadow: none;
 }
 .btn-ghost:hover:not(:disabled) {
   --btn-bg: var(--surface-3);
 }
 .btn-on-brand {
-  --btn-bg: var(--brand-ink);
-  --btn-fg: var(--brand);
-  --btn-bd: transparent;
+  --btn-bg: var(--sq-light);
+  --btn-fg: #1b1612;
+  --btn-bd: var(--sq-light);
 }
 .btn-on-brand:hover {
   --btn-bg: #ffffff;
-  --btn-fg: var(--brand);
+  --btn-bd: #ffffff;
+  --btn-fg: #1b1612;
 }
 .btn-danger {
   --btn-bg: transparent;
   --btn-fg: var(--bad);
-  --btn-bd: color-mix(in srgb, var(--bad) 45%, transparent);
-  box-shadow: none;
+  --btn-bd: var(--bad);
 }
 .btn-danger:hover:not(:disabled) {
   --btn-bg: var(--bad-soft);
@@ -437,14 +411,12 @@ em {
 .btn-small {
   min-height: 34px;
   padding: 0 12px;
-  font-size: 0.875rem;
-  border-radius: 7px;
+  font-size: 0.85rem;
 }
 .btn-large {
   min-height: 50px;
-  padding: 0 22px;
+  padding: 0 24px;
   font-size: 1rem;
-  border-radius: 10px;
 }
 .btn-block {
   width: 100%;
@@ -460,11 +432,12 @@ em {
   background: transparent;
   color: var(--ink-2);
   cursor: pointer;
-  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  transition: background-color 0.14s, color 0.14s, border-color 0.14s;
 }
 .icon-btn:hover,
 .icon-btn.is-active {
   background: var(--surface-3);
+  border-color: var(--line-2);
   color: var(--ink);
 }
 
@@ -474,11 +447,11 @@ em {
   min-width: 20px;
   height: 20px;
   padding: 0 6px;
-  border-radius: 999px;
-  background: var(--accent);
-  color: var(--accent-ink);
+  border-radius: var(--r-xs);
+  background: var(--btn-solid);
+  color: var(--btn-solid-ink);
   font-size: 0.72rem;
-  font-weight: 650;
+  font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
@@ -487,25 +460,30 @@ em {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  padding: 3px 9px;
-  border-radius: 999px;
-  background: var(--surface-3);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--r-xs);
+  border: 1px solid var(--line-2);
+  background: transparent;
   color: var(--ink-3);
   white-space: nowrap;
 }
 .tag-accent {
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: var(--sq-light);
+  border-color: var(--sq-dark);
+  color: #5a3a1f;
 }
 .tag-good {
   background: var(--good-soft);
+  border-color: color-mix(in srgb, var(--good) 40%, transparent);
   color: var(--good);
 }
 .tag-warn {
   background: var(--info-soft);
+  border-color: color-mix(in srgb, var(--info) 40%, transparent);
   color: var(--info);
 }
 
@@ -513,30 +491,28 @@ em {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 5px 10px 5px 8px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
+  padding: 5px 12px 5px 8px;
+  border-radius: var(--r-sm);
+  border: var(--border-strong);
   background: var(--surface);
   color: var(--ink-2);
   font-size: 0.8125rem;
-  font-weight: 550;
+  font-weight: 600;
   text-decoration: none;
-  box-shadow: var(--shadow-xs);
   margin-bottom: 28px;
-  transition: border-color 0.15s;
+  transition: border-color 0.14s;
 }
 .pill:hover {
-  border-color: var(--accent-line);
+  border-color: var(--ink);
   color: var(--ink);
 }
 .pill-dot,
 .live-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft);
+  width: 9px;
+  height: 9px;
   display: inline-block;
+  background: linear-gradient(90deg, var(--sq-light) 50%, var(--sq-dark) 50%);
+  outline: 1px solid var(--sq-dark);
 }
 
 /* ---------- Top bar ---------- */
@@ -545,10 +521,8 @@ em {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
-  backdrop-filter: saturate(1.4) blur(14px);
-  -webkit-backdrop-filter: saturate(1.4) blur(14px);
-  border-bottom: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+  background: var(--bg);
+  border-bottom: 1px solid var(--line-2);
 }
 .topbar-inner {
   max-width: var(--container);
@@ -563,7 +537,6 @@ em {
   display: flex;
   text-decoration: none;
   color: var(--ink);
-  border-radius: var(--r-sm);
 }
 .brand:hover {
   color: var(--ink);
@@ -575,9 +548,8 @@ em {
 }
 .wordmark-text {
   font-family: var(--font-display);
-  font-weight: 550;
-  font-size: 1.45rem;
-  letter-spacing: -0.03em;
+  font-size: 1.7rem;
+  letter-spacing: 0.04em;
   line-height: 1;
   color: var(--ink);
 }
@@ -595,12 +567,12 @@ em {
   text-decoration: none;
   padding: 7px 12px;
   border-radius: var(--r-sm);
-  font-weight: 520;
+  font-weight: 600;
   font-size: 0.9375rem;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: color 0.15s, background-color 0.15s;
+  transition: color 0.14s, background-color 0.14s;
 }
 .nav a:hover {
   color: var(--ink);
@@ -615,9 +587,8 @@ em {
   left: 12px;
   right: 12px;
   bottom: -13px;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--accent);
+  height: 3px;
+  background: var(--ink);
 }
 .topbar-end {
   margin-left: auto;
@@ -636,26 +607,37 @@ em {
   min-height: calc(100vh - var(--topbar-h) - 200px);
 }
 .route {
-  animation: route-in 0.38s var(--ease) both;
+  animation: route-in 0.3s var(--ease) both;
 }
 @keyframes route-in {
   from {
     opacity: 0;
-    transform: translateY(6px);
   }
   to {
     opacity: 1;
-    transform: none;
   }
 }
 
 .footer {
-  border-top: 1px solid var(--line);
+  position: relative;
   margin-top: 96px;
   background: var(--bg-2);
+  border-top: 1px solid var(--line-2);
+}
+.footer::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -9px;
+  height: 8px;
+  background: repeating-linear-gradient(90deg, var(--sq-light) 0 var(--cs, 14px), var(--sq-dark) 0 calc(var(--cs, 14px) * 2));
 }
 .main-home + .footer {
   margin-top: 0;
+}
+.main-home + .footer::before {
+  display: none;
 }
 .footer-inner {
   max-width: var(--container);
@@ -682,9 +664,9 @@ em {
   gap: 8px;
 }
 .footer-head {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.09em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-3);
   margin-bottom: 4px;
@@ -696,12 +678,13 @@ em {
 }
 .footer-links a:hover {
   color: var(--ink);
+  text-decoration: underline;
 }
 .footer-base {
   max-width: var(--container);
   margin: 0 auto;
   padding: 18px var(--gutter) 28px;
-  border-top: 1px solid var(--line);
+  border-top: var(--border);
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -723,28 +706,27 @@ em {
 .page-head {
   margin-bottom: 32px;
 }
+.page-head h1 {
+  margin-bottom: 0.3em;
+}
 .state-page {
   padding-top: 72px;
 }
 .state-page .lead {
   margin-bottom: 28px;
 }
+.state-page .eyebrow {
+  display: flex;
+}
 .state-icon {
   display: grid;
   place-items: center;
   width: 52px;
   height: 52px;
-  border-radius: 14px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  border: 1px solid var(--accent-line);
+  background: var(--sq-light);
+  color: #1b1612;
+  border: 1.5px solid var(--sq-dark);
   margin-bottom: 24px;
-}
-.state-page .eyebrow {
-  display: flex;
-}
-.page-head h1 {
-  margin-bottom: 0.3em;
 }
 .crumb {
   display: inline-flex;
@@ -752,17 +734,17 @@ em {
   gap: 6px;
   color: var(--ink-3);
   text-decoration: none;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   margin-bottom: 20px;
   padding: 4px 0;
-  transition: color 0.15s;
+  transition: color 0.14s;
 }
 .crumb:hover {
   color: var(--ink);
 }
 .crumb .icon {
-  transition: transform 0.15s var(--ease);
+  transition: transform 0.14s var(--ease);
 }
 .crumb:hover .icon {
   transform: translateX(-2px);
@@ -772,21 +754,18 @@ em {
 
 .card {
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: var(--border-strong);
   border-radius: var(--r-lg);
   padding: 24px;
-  box-shadow: var(--shadow-sm);
 }
 .card-accent,
 .card.is-primary {
-  border-color: var(--accent-line);
-  box-shadow: 0 0 0 1px var(--accent-line), var(--shadow);
+  border: 1.5px solid var(--ink);
 }
 .big-number {
   font-family: var(--font-display);
-  font-size: 2.75rem;
-  font-weight: 450;
-  letter-spacing: -0.03em;
+  font-size: 3rem;
+  letter-spacing: 0.01em;
   line-height: 1;
   margin-bottom: 8px;
   font-variant-numeric: tabular-nums lining-nums;
@@ -794,15 +773,15 @@ em {
 .big-number .of {
   color: var(--ink-4);
   font-size: 0.6em;
-  letter-spacing: -0.01em;
 }
 
 .callout {
   display: flex;
   gap: 14px;
   align-items: flex-start;
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-line);
+  background: var(--surface-2);
+  border: var(--border-strong);
+  border-left: 4px solid var(--sq-dark);
   border-radius: var(--r);
   padding: 16px 18px;
   margin: 24px 0;
@@ -821,15 +800,16 @@ em {
 }
 .callout-warn {
   background: var(--info-soft);
-  border-color: color-mix(in srgb, var(--info) 25%, transparent);
+  border-color: color-mix(in srgb, var(--info) 30%, transparent);
+  border-left-color: var(--info);
 }
 .callout-warn > .icon {
   color: var(--info);
 }
 .callout-label {
-  font-size: 0.72rem;
-  font-weight: 650;
-  letter-spacing: 0.09em;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent);
   margin-bottom: 4px;
@@ -838,33 +818,31 @@ em {
   color: var(--info);
 }
 .callout-kibitzer h3 {
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   margin-bottom: 6px;
 }
 
 .meter {
   position: relative;
   height: 8px;
-  border-radius: 999px;
   background: var(--surface-3);
+  border: 1px solid var(--line-2);
   margin: 10px 0;
 }
 .meter-sm {
-  height: 5px;
+  height: 6px;
 }
 .meter-fill {
   height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 75%, var(--surface)), var(--accent));
-  transition: width 0.6s var(--ease);
+  background: var(--sq-dark);
+  transition: width 0.5s var(--ease);
 }
 .meter-line {
   position: absolute;
-  top: -3px;
-  bottom: -3px;
+  top: -4px;
+  bottom: -4px;
   width: 2px;
-  background: var(--ink-4);
-  border-radius: 1px;
+  background: var(--ink);
 }
 
 .ring {
@@ -878,10 +856,10 @@ em {
 }
 .ring-fill {
   fill: none;
-  stroke: var(--accent);
+  stroke: var(--sq-dark);
   stroke-width: 4;
-  stroke-linecap: round;
-  transition: stroke-dasharray 0.8s var(--ease);
+  stroke-linecap: butt;
+  transition: stroke-dasharray 0.7s var(--ease);
 }
 
 .chips {
@@ -894,23 +872,23 @@ em {
   align-items: center;
   gap: 6px;
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 600;
   padding: 6px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  border: var(--border-strong);
   background: var(--surface);
   color: var(--ink);
   text-decoration: none;
-  transition: border-color 0.15s, background-color 0.15s;
+  transition: border-color 0.14s, background-color 0.14s;
 }
 a.lesson-chip:hover {
-  border-color: var(--accent);
+  border-color: var(--ink);
   color: var(--ink);
 }
 .lesson-chip.is-done {
-  border-color: var(--accent-line);
-  background: var(--accent-soft);
-  color: var(--accent);
+  border-color: var(--sq-dark);
+  background: var(--sq-light);
+  color: #1b1612;
 }
 .lesson-chip.is-soon,
 .lesson-chip.is-locked {
@@ -926,23 +904,18 @@ a.lesson-chip:hover {
 .hero {
   position: relative;
   overflow: hidden;
-  padding: 72px 0 88px;
-  border-bottom: 1px solid var(--line);
-  background:
-    radial-gradient(900px 480px at 85% 10%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 70%),
-    radial-gradient(700px 400px at 0% 100%, color-mix(in srgb, var(--brass) 7%, transparent), transparent 70%);
+  padding: 72px 0 96px;
+  background: var(--bg);
 }
-.hero::before {
-  /* A faint chequer, the board as texture. */
+.hero::after {
   content: '';
   position: absolute;
-  inset: 0;
-  background-image: conic-gradient(var(--ink) 25%, transparent 0 50%, var(--ink) 0 75%, transparent 0);
-  background-size: 56px 56px;
-  opacity: 0.025;
-  mask-image: radial-gradient(ellipse 70% 80% at 70% 40%, #000 20%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse 70% 80% at 70% 40%, #000 20%, transparent 75%);
-  pointer-events: none;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 10px;
+  background: repeating-linear-gradient(90deg, var(--sq-light) 0 var(--cs, 14px), var(--sq-dark) 0 calc(var(--cs, 14px) * 2));
+  --cs: 20px;
 }
 .hero-grid {
   position: relative;
@@ -992,60 +965,55 @@ a.lesson-chip:hover {
 }
 .frame {
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--r-xl);
-  box-shadow: var(--shadow-lg);
+  border: 1.5px solid var(--ink);
+  border-radius: var(--r);
   padding: 10px;
-  transform: rotate(0.6deg);
 }
 .frame-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 6px 8px 12px;
+  padding: 4px 4px 12px;
   font-size: 0.8125rem;
   color: var(--ink-2);
-  font-weight: 550;
+  font-weight: 600;
 }
 .frame-crumb .mono {
-  color: var(--ink-3);
+  color: var(--accent);
   margin-right: 4px;
 }
 .frame-steps {
   display: inline-flex;
-  gap: 4px;
+  gap: 3px;
 }
 .frame-steps span {
-  width: 16px;
-  height: 4px;
-  border-radius: 2px;
+  width: 12px;
+  height: 12px;
   background: var(--surface-3);
+  border: 1px solid var(--line-2);
 }
 .frame-steps .is-done {
-  background: var(--accent-line);
+  background: var(--sq-light);
+  border-color: var(--sq-dark);
 }
 .frame-steps .is-current {
-  background: var(--accent);
-  width: 26px;
+  background: var(--sq-dark);
+  border-color: var(--sq-dark);
 }
 .frame-board .board {
-  border-radius: 12px;
-  box-shadow: none;
+  border-radius: 0;
 }
 .float-card {
   position: absolute;
   display: flex;
   gap: 12px;
   align-items: flex-start;
-  background: color-mix(in srgb, var(--surface) 92%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--line);
+  background: var(--surface);
+  border: 1.5px solid var(--ink);
   border-radius: var(--r);
-  box-shadow: var(--shadow-lg);
   padding: 12px 14px;
-  animation: float-in 0.7s var(--ease) both;
+  animation: float-in 0.6s var(--ease) both;
 }
 .float-card p {
   margin: 2px 0 0;
@@ -1056,9 +1024,9 @@ a.lesson-chip:hover {
 }
 .float-label {
   display: block;
-  font-size: 0.6875rem;
-  font-weight: 650;
-  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
 }
@@ -1066,24 +1034,24 @@ a.lesson-chip:hover {
   left: -40px;
   bottom: 0;
   max-width: 290px;
-  animation-delay: 0.25s;
+  animation-delay: 0.2s;
 }
 .float-mastery {
   right: 0;
   top: 52px;
   align-items: center;
-  animation-delay: 0.45s;
+  animation-delay: 0.35s;
 }
 .float-mastery strong {
   font-family: var(--font-display);
-  font-size: 1.4rem;
-  font-weight: 500;
+  font-size: 1.6rem;
+  font-weight: 400;
   line-height: 1.1;
 }
 @keyframes float-in {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -1092,8 +1060,8 @@ a.lesson-chip:hover {
 }
 
 .stats-band {
-  border-bottom: 1px solid var(--line);
   background: var(--surface);
+  border-bottom: 1px solid var(--line-2);
 }
 .stats {
   display: grid;
@@ -1104,7 +1072,7 @@ a.lesson-chip:hover {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  border-left: 1px solid var(--line);
+  border-left: var(--border);
 }
 .stats > div:first-child {
   border-left: none;
@@ -1112,10 +1080,9 @@ a.lesson-chip:hover {
 }
 .stats strong {
   font-family: var(--font-display);
-  font-weight: 450;
-  font-size: 2.5rem;
+  font-weight: 400;
+  font-size: 2.8rem;
   line-height: 1;
-  letter-spacing: -0.03em;
   font-variant-numeric: lining-nums;
 }
 .stats span {
@@ -1128,8 +1095,8 @@ a.lesson-chip:hover {
 }
 .section-alt {
   background: var(--bg-2);
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  border-top: 1px solid var(--line-2);
+  border-bottom: 1px solid var(--line-2);
 }
 .section-head {
   max-width: 680px;
@@ -1137,9 +1104,8 @@ a.lesson-chip:hover {
 }
 .section-head h2,
 .split-text h2 {
-  font-size: clamp(1.85rem, 1.3rem + 1.8vw, 2.6rem);
-  letter-spacing: -0.025em;
-  line-height: 1.08;
+  font-size: clamp(2rem, 1.4rem + 2vw, 3rem);
+  line-height: 1;
 }
 .section-lead {
   font-size: 1.0625rem;
@@ -1157,10 +1123,9 @@ a.lesson-chip:hover {
 }
 .phase {
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: var(--border-strong);
   border-radius: var(--r-lg);
   padding: 24px;
-  box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
 }
@@ -1168,24 +1133,23 @@ a.lesson-chip:hover {
   content: '';
   position: absolute;
   inset: 0 0 auto 0;
-  height: 3px;
-  background: var(--accent);
-  opacity: 0.35;
+  height: 6px;
+  background: repeating-linear-gradient(90deg, var(--sq-light) 0 var(--cs, 14px), var(--sq-dark) 0 calc(var(--cs, 14px) * 2));
+  --cs: 6px;
 }
 .phase-2::before {
-  opacity: 0.65;
+  --cs: 12px;
 }
 .phase-3::before {
-  opacity: 1;
+  --cs: 24px;
 }
 .phase-head {
   margin-bottom: 20px;
 }
 .phase-name {
   font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-size: 1.7rem;
+  letter-spacing: 0.02em;
 }
 .phase-head p {
   color: var(--ink-3);
@@ -1204,11 +1168,11 @@ a.lesson-chip:hover {
   gap: 14px;
   align-items: flex-start;
   padding: 12px 0;
-  border-top: 1px solid var(--line);
+  border-top: var(--border);
 }
 .phase-steps strong {
   display: block;
-  font-weight: 600;
+  font-weight: 650;
   font-size: 0.95rem;
 }
 .phase-steps span {
@@ -1219,14 +1183,14 @@ a.lesson-chip:hover {
   flex: none;
   width: 26px;
   height: 26px;
-  border-radius: 7px;
   display: grid;
   place-items: center;
-  background: var(--accent-soft);
-  color: var(--accent) !important;
+  background: var(--sq-light);
+  border: 1px solid var(--sq-dark);
+  color: #1b1612 !important;
   font-family: var(--font-mono);
   font-size: 0.75rem !important;
-  font-weight: 600;
+  font-weight: 700;
   margin-top: 1px;
 }
 
@@ -1255,9 +1219,8 @@ a.lesson-chip:hover {
 
 .ladder-demo {
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--r-xl);
-  box-shadow: var(--shadow-lg);
+  border: 1.5px solid var(--ink);
+  border-radius: var(--r);
   padding: 24px;
 }
 .ladder-head {
@@ -1266,13 +1229,14 @@ a.lesson-chip:hover {
   align-items: center;
   padding-bottom: 18px;
   margin-bottom: 18px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: var(--border);
 }
 .ladder-head strong {
   display: block;
   font-family: var(--font-display);
-  font-weight: 550;
-  font-size: 1.15rem;
+  font-weight: 400;
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
 }
 .ladder-head span {
   font-size: 0.8125rem;
@@ -1283,33 +1247,37 @@ a.lesson-chip:hover {
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 .ladder li {
   display: flex;
   flex-direction: column;
   gap: 3px;
   padding: 12px 14px;
-  border-radius: var(--r);
+  border-radius: var(--r-sm);
   background: var(--surface-2);
-  border: 1px solid var(--line);
+  border: var(--border);
   font-size: 0.9375rem;
   margin-left: calc(var(--i) * 14px);
 }
 .ladder li:last-child {
-  background: var(--accent-soft);
-  border-color: var(--accent-line);
+  background: var(--sq-light);
+  border-color: var(--sq-dark);
+  color: #1b1612;
 }
 .ladder-rung,
 .hint-rung {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.6875rem;
-  font-weight: 650;
-  letter-spacing: 0.09em;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
+}
+.ladder li:last-child .ladder-rung {
+  color: #6b4323;
 }
 .ladder-rung .mono,
 .hint-rung .mono {
@@ -1317,19 +1285,16 @@ a.lesson-chip:hover {
   place-items: center;
   width: 16px;
   height: 16px;
-  border-radius: 4px;
-  background: var(--accent);
-  color: var(--accent-ink);
+  background: var(--btn-solid);
+  color: var(--btn-solid-ink);
   font-size: 0.625rem;
-  letter-spacing: 0;
 }
 
 .curve-card {
   margin: 0;
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--r-xl);
-  box-shadow: var(--shadow-lg);
+  border: 1.5px solid var(--ink);
+  border-radius: var(--r);
   padding: 24px 24px 18px;
 }
 .curve {
@@ -1339,7 +1304,7 @@ a.lesson-chip:hover {
 }
 .curve-grid {
   stroke: var(--line);
-  stroke-dasharray: 3 4;
+  stroke-dasharray: 2 4;
 }
 .curve-axis {
   font-family: var(--font-mono);
@@ -1347,22 +1312,22 @@ a.lesson-chip:hover {
   fill: var(--ink-3);
 }
 .curve-area {
-  fill: color-mix(in srgb, var(--accent) 10%, transparent);
+  fill: color-mix(in srgb, var(--sq-dark) 18%, transparent);
 }
 .curve-line {
   fill: none;
-  stroke: var(--accent);
-  stroke-width: 2.25;
-  stroke-linejoin: round;
+  stroke: var(--sq-dark);
+  stroke-width: 2.5;
+  stroke-linejoin: miter;
 }
 .curve-tick {
-  stroke: var(--accent-line);
+  stroke: var(--line-2);
   stroke-width: 1;
 }
 .curve-dot {
   fill: var(--surface);
-  stroke: var(--accent);
-  stroke-width: 2.25;
+  stroke: var(--ink);
+  stroke-width: 2;
 }
 .curve-card figcaption {
   font-size: 0.85rem;
@@ -1373,67 +1338,72 @@ a.lesson-chip:hover {
 .curr-strip {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+  gap: 0;
+  border: 1.5px solid var(--ink);
 }
 .curr-tile {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  min-height: 190px;
+  min-height: 200px;
   padding: 20px;
-  border-radius: var(--r-lg);
-  border: 1px solid var(--line);
-  background: var(--surface);
-  color: var(--ink);
+  color: #1b1612;
   text-decoration: none;
-  box-shadow: var(--shadow-sm);
-  transition: border-color 0.2s, transform 0.2s var(--ease), box-shadow 0.2s;
+  transition: filter 0.14s;
+}
+/* The strip alternates like a rank of squares. */
+.curr-tile:nth-child(odd) {
+  background: var(--sq-light);
+}
+.curr-tile:nth-child(even) {
+  background: var(--sq-dark);
 }
 .curr-tile:hover {
-  color: var(--ink);
-  border-color: var(--accent-line);
-  transform: translateY(-3px);
-  box-shadow: var(--shadow);
+  color: #1b1612;
+  filter: brightness(1.05);
 }
 .curr-index {
-  color: var(--accent);
+  color: #5a3a1f;
   font-size: 0.8rem;
   margin-bottom: auto;
 }
+.curr-tile:nth-child(even) .curr-index {
+  color: #2e1d0f;
+}
 .curr-tile strong {
   font-family: var(--font-display);
-  font-weight: 500;
-  font-size: 1.35rem;
-  letter-spacing: -0.015em;
+  font-weight: 400;
+  font-size: 1.55rem;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
   margin-top: 24px;
 }
 .curr-tag {
   font-size: 0.875rem;
-  color: var(--ink-2);
+  color: #3b2a1c;
 }
 .curr-meta {
   font-size: 0.78rem;
-  color: var(--ink-3);
+  color: #3b2a1c;
   padding-top: 10px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid rgba(27, 22, 18, 0.2);
   margin-top: 6px;
 }
 
 .cta-band {
-  background: var(--brand);
-  color: var(--brand-ink);
+  background: #1b1612;
+  color: var(--sq-light);
   position: relative;
   overflow: hidden;
 }
 .cta-band::before {
   content: '';
   position: absolute;
-  inset: 0;
-  background-image: conic-gradient(#fff 25%, transparent 0 50%, #fff 0 75%, transparent 0);
-  background-size: 48px 48px;
-  opacity: 0.045;
-  mask-image: linear-gradient(90deg, transparent, #000 70%);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 70%);
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 8px;
+  background: repeating-linear-gradient(90deg, var(--sq-light) 0 var(--cs, 14px), var(--sq-dark) 0 calc(var(--cs, 14px) * 2));
 }
 .cta-inner {
   position: relative;
@@ -1446,8 +1416,8 @@ a.lesson-chip:hover {
   padding-bottom: 64px;
 }
 .cta-inner h2 {
-  color: var(--brand-ink);
-  font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.2rem);
+  color: var(--sq-light);
+  font-size: clamp(1.9rem, 1.4rem + 1.6vw, 2.6rem);
   margin-bottom: 6px;
 }
 .cta-inner p {
@@ -1470,17 +1440,15 @@ a.lesson-chip:hover {
   gap: 24px;
   align-items: center;
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: var(--border-strong);
   border-radius: var(--r-lg);
   padding: 28px;
-  box-shadow: var(--shadow-sm);
 }
 .dash-next.is-primary {
-  border-color: var(--accent-line);
-  box-shadow: 0 0 0 1px var(--accent-line), var(--shadow);
+  border: 1.5px solid var(--ink);
 }
 .dash-next h2 {
-  font-size: 1.6rem;
+  font-size: 1.9rem;
   margin-bottom: 6px;
 }
 .dash-next-text p:last-of-type {
@@ -1488,11 +1456,14 @@ a.lesson-chip:hover {
 }
 .dash-next-board {
   display: block;
-  border-radius: 10px;
-  transition: transform 0.2s var(--ease);
+  border: 2px solid var(--board-frame);
+  transition: transform 0.18s var(--ease);
+}
+.dash-next-board .board {
+  border: none;
 }
 .dash-next-board:hover {
-  transform: scale(1.02);
+  transform: translateY(-2px);
 }
 .dash-card {
   display: flex;
@@ -1515,9 +1486,9 @@ a.lesson-chip:hover {
   place-items: center;
   width: 32px;
   height: 32px;
-  border-radius: 9px;
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: var(--sq-light);
+  border: 1px solid var(--sq-dark);
+  color: #1b1612;
 }
 .dash-ring {
   display: flex;
@@ -1534,13 +1505,13 @@ a.lesson-chip:hover {
   list-style: none;
   padding: 0;
   margin: 0;
-  border: 1px solid var(--line);
+  border: var(--border-strong);
   border-radius: var(--r-lg);
   background: var(--surface);
   overflow: hidden;
 }
 .recent-list li + li {
-  border-top: 1px solid var(--line);
+  border-top: var(--border);
 }
 .recent-list a {
   display: grid;
@@ -1550,14 +1521,14 @@ a.lesson-chip:hover {
   padding: 14px 20px;
   text-decoration: none;
   color: var(--ink);
-  transition: background-color 0.15s;
+  transition: background-color 0.14s;
 }
 .recent-list a:hover {
   background: var(--surface-2);
   color: var(--ink);
 }
 .recent-title {
-  font-weight: 500;
+  font-weight: 600;
 }
 .recent-pct {
   text-align: right;
@@ -1571,15 +1542,14 @@ a.lesson-chip:hover {
    ========================================================================== */
 
 .graph-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--r-xl);
+  background-color: var(--surface);
+  border: var(--border-strong);
+  border-radius: var(--r-lg);
   padding: 32px 24px;
   margin: 32px 0 64px;
-  box-shadow: var(--shadow-sm);
-  background-image: radial-gradient(var(--line) 1px, transparent 1px);
-  background-size: 20px 20px;
-  background-position: -10px -10px;
+  /* A faint board under the map. */
+  background-image: conic-gradient(var(--surface-2) 25%, transparent 0 50%, var(--surface-2) 0 75%, transparent 0);
+  background-size: 48px 48px;
 }
 .journey-graph {
   width: 100%;
@@ -1592,22 +1562,20 @@ a.lesson-chip:hover {
   fill: var(--surface);
   stroke: var(--line-2);
   stroke-width: 1.2;
-  transition: stroke 0.15s;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.06));
+  transition: stroke 0.14s;
 }
 .jg-node:hover .jg-box,
 .jg-node:focus-visible .jg-box {
-  stroke: var(--accent);
-  stroke-width: 1.8;
+  stroke: var(--ink);
+  stroke-width: 2;
 }
 .jg-node:focus-visible {
   outline: none;
 }
 .jg-title {
   font-family: var(--font-display);
-  font-weight: 550;
-  font-size: 18px;
-  letter-spacing: -0.01em;
+  font-size: 20px;
+  letter-spacing: 0.02em;
   fill: var(--ink);
 }
 .jg-sub {
@@ -1617,13 +1585,14 @@ a.lesson-chip:hover {
 .jg-note {
   font-family: var(--font-mono);
   font-size: 11px;
+  font-weight: 600;
   fill: var(--accent);
 }
 .jg-track {
   fill: var(--surface-3);
 }
 .jg-fill {
-  fill: var(--accent);
+  fill: var(--sq-dark);
 }
 
 .curriculum {
@@ -1636,7 +1605,7 @@ a.lesson-chip:hover {
   align-items: end;
   padding-bottom: 20px;
   margin-bottom: 24px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1.5px solid var(--ink);
 }
 .curriculum-head h2 {
   margin-bottom: 6px;
@@ -1655,6 +1624,7 @@ a.lesson-chip:hover {
   padding: 12px 14px;
   border-radius: var(--r);
   background: var(--surface-2);
+  border: var(--border);
 }
 .course-grid {
   display: grid;
@@ -1665,29 +1635,26 @@ a.lesson-chip:hover {
   display: flex;
   flex-direction: column;
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: var(--border-strong);
   border-radius: var(--r-lg);
   padding: 20px;
   text-decoration: none;
   color: var(--ink);
-  box-shadow: var(--shadow-xs);
-  transition: border-color 0.2s, transform 0.2s var(--ease), box-shadow 0.2s;
+  transition: border-color 0.14s, background-color 0.14s;
 }
 .course-card:hover {
   color: var(--ink);
-  border-color: var(--accent-line);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
+  border-color: var(--ink);
 }
 .course-card.is-soon {
   background: transparent;
-  box-shadow: none;
+  border-style: dashed;
 }
 .course-card.is-soon h3 {
   color: var(--ink-2);
 }
 .course-card h3 {
-  font-size: 1.15rem;
+  font-size: 1.35rem;
   margin: 14px 0 6px;
 }
 .course-card p {
@@ -1706,8 +1673,8 @@ a.lesson-chip:hover {
 .lesson-num {
   font-family: var(--font-mono);
   font-size: 0.8rem;
-  color: var(--ink-3);
-  font-weight: 500;
+  color: var(--accent);
+  font-weight: 600;
 }
 
 .course-meta {
@@ -1719,7 +1686,7 @@ a.lesson-chip:hover {
   margin: 24px 0 32px;
   padding: 18px 20px;
   border-radius: var(--r-lg);
-  border: 1px solid var(--line);
+  border: var(--border-strong);
   background: var(--surface);
 }
 .course-progress {
@@ -1751,7 +1718,7 @@ a.lesson-chip:hover {
   padding: 0;
   margin: 0;
   position: relative;
-  border: 1px solid var(--line);
+  border: var(--border-strong);
   border-radius: var(--r-lg);
   background: var(--surface);
   overflow: hidden;
@@ -1763,13 +1730,13 @@ a.lesson-chip:hover {
   top: 36px;
   bottom: 36px;
   width: 2px;
-  background: var(--line);
-}
-.lesson-row + .lesson-row {
-  border-top: 1px solid var(--line);
+  background: var(--line-2);
 }
 .lesson-row {
   position: relative;
+}
+.lesson-row + .lesson-row {
+  border-top: var(--border);
 }
 .lesson-row-link {
   display: flex;
@@ -1778,37 +1745,37 @@ a.lesson-chip:hover {
   padding: 18px 22px;
   text-decoration: none;
   color: var(--ink);
-  transition: background-color 0.15s;
+  transition: background-color 0.14s;
 }
 a.lesson-row-link:hover {
   background: var(--surface-2);
   color: var(--ink);
 }
+/* Nodes are squares on the board: light, dark, or occupied. */
 .node {
   flex: none;
   position: relative;
   z-index: 1;
   width: 36px;
   height: 36px;
-  border-radius: 50%;
   display: grid;
   place-items: center;
   font-family: var(--font-mono);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.8rem;
   border: 1.5px solid var(--line-2);
   background: var(--surface);
   color: var(--ink-3);
 }
 .node-available {
-  border-color: var(--accent);
-  color: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-soft);
+  background: var(--sq-light);
+  border-color: var(--ink);
+  color: #1b1612;
 }
 .node-done {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-ink);
+  background: var(--sq-dark);
+  border-color: var(--sq-dark);
+  color: #1b1612;
 }
 .lesson-row-body {
   display: flex;
@@ -1818,11 +1785,11 @@ a.lesson-row-link:hover {
   min-width: 0;
 }
 .lesson-row-title {
-  font-weight: 600;
+  font-weight: 650;
   font-size: 1rem;
 }
 .lesson-row-title .mono {
-  color: var(--ink-3);
+  color: var(--accent);
   margin-right: 6px;
 }
 .lesson-row.is-locked .lesson-row-title,
@@ -1871,7 +1838,7 @@ a.lesson-row-link:hover {
 }
 .lesson-kicker .mono {
   color: var(--accent);
-  font-weight: 600;
+  font-weight: 700;
 }
 .lesson-kicker > span {
   display: inline-flex;
@@ -1882,20 +1849,18 @@ a.lesson-row-link:hover {
 .steps {
   position: relative;
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: var(--border-strong);
   border-radius: var(--r-lg);
   padding: 6px;
-  box-shadow: var(--shadow-xs);
 }
 .steps::after {
   content: '';
   position: absolute;
-  left: 16px;
-  right: 16px;
+  left: -1px;
+  right: -1px;
   bottom: -1px;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent) var(--progress, 0%), transparent var(--progress, 0%));
-  border-radius: 2px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--ink) var(--progress, 0%), transparent var(--progress, 0%));
   transition: background 0.4s var(--ease);
 }
 .steps-list {
@@ -1921,14 +1886,14 @@ a.lesson-row-link:hover {
   border: none;
   font: inherit;
   font-size: 0.8125rem;
-  font-weight: 520;
+  font-weight: 600;
   color: var(--ink-3);
   padding: 9px 10px;
-  border-radius: 10px;
+  border-radius: var(--r-sm);
   cursor: pointer;
   text-align: left;
   min-width: 0;
-  transition: background-color 0.15s, color 0.15s;
+  transition: background-color 0.14s, color 0.14s;
 }
 .step:disabled {
   cursor: default;
@@ -1947,22 +1912,21 @@ a.lesson-row-link:hover {
   flex: none;
   width: 22px;
   height: 22px;
-  border-radius: 7px;
   display: grid;
   place-items: center;
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 700;
   background: var(--surface-3);
   color: var(--ink-3);
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color 0.14s, color 0.14s;
 }
 .step.is-done {
   color: var(--ink-2);
 }
 .step.is-done .step-num {
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: var(--sq-light);
+  color: #1b1612;
 }
 .step.is-current {
   color: var(--ink);
@@ -1970,17 +1934,17 @@ a.lesson-row-link:hover {
   box-shadow: inset 0 0 0 1px var(--line-2);
 }
 .step.is-current .step-num {
-  background: var(--accent);
-  color: var(--accent-ink);
+  background: var(--btn-solid);
+  color: var(--btn-solid-ink);
 }
 
 .step-body {
-  animation: step-in 0.35s var(--ease) both;
+  animation: step-in 0.3s var(--ease) both;
 }
 @keyframes step-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -1989,9 +1953,6 @@ a.lesson-row-link:hover {
 }
 .step-title h2 {
   margin-bottom: 8px;
-}
-.step-title .eyebrow {
-  color: var(--accent);
 }
 .step-intro {
   color: var(--ink-2);
@@ -2017,7 +1978,7 @@ a.lesson-row-link:hover {
   max-width: 64ch;
 }
 .stage-text h3 {
-  font-size: 1.45rem;
+  font-size: 1.6rem;
   margin-top: 4px;
 }
 .stage-text p {
@@ -2030,9 +1991,8 @@ a.lesson-row-link:hover {
   line-height: 1.6;
 }
 .stage-text p.eyebrow {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   line-height: 1.4;
-  color: var(--ink-3);
 }
 .stage-board {
   position: sticky;
@@ -2046,36 +2006,36 @@ a.lesson-row-link:hover {
 .task-dots {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   margin-bottom: 24px;
   flex-wrap: wrap;
 }
 .pip {
   position: relative;
-  width: 28px;
-  height: 6px;
-  border-radius: 999px;
-  border: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--line-2);
   background: var(--surface-3);
   cursor: pointer;
   padding: 0;
-  transition: background-color 0.2s, width 0.25s var(--ease);
+  transition: background-color 0.14s, border-color 0.14s;
 }
 .pip::before {
   /* larger hit area */
   content: '';
   position: absolute;
-  inset: -9px -2px;
+  inset: -6px -2px;
 }
 .pip:hover {
-  background: var(--line-2);
+  border-color: var(--ink);
 }
 .pip.is-done {
-  background: var(--accent-line);
+  background: var(--sq-light);
+  border-color: var(--sq-dark);
 }
 .pip.is-current {
-  background: var(--accent);
-  width: 40px;
+  background: var(--sq-dark);
+  border-color: var(--ink);
 }
 .theory-progress .muted,
 .task-dots .muted {
@@ -2089,7 +2049,7 @@ a.lesson-row-link:hover {
   flex-wrap: wrap;
   margin-top: 28px;
   padding-top: 24px;
-  border-top: 1px solid var(--line);
+  border-top: var(--border);
 }
 
 .walkthrough {
@@ -2098,12 +2058,13 @@ a.lesson-row-link:hover {
   padding: 0;
   margin: 0 0 8px;
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 .walkthrough li {
   counter-increment: wt;
   position: relative;
   padding: 12px 14px 12px 48px;
+  border: 1px solid transparent;
   border-radius: var(--r);
   color: var(--ink-2);
   line-height: 1.6;
@@ -2116,32 +2077,30 @@ a.lesson-row-link:hover {
   top: 13px;
   width: 22px;
   height: 22px;
-  border-radius: 6px;
   display: grid;
   place-items: center;
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 700;
   background: var(--surface-3);
   color: var(--ink-3);
 }
 .walkthrough li.is-current {
   color: var(--ink);
   background: var(--surface);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow-xs);
+  border-color: var(--line-2);
 }
 .walkthrough li.is-current::before {
-  background: var(--accent);
-  color: var(--accent-ink);
+  background: var(--btn-solid);
+  color: var(--btn-solid-ink);
 }
 
 .task-prompt {
-  font-family: var(--font-display);
-  font-size: 1.5rem !important;
-  line-height: 1.35 !important;
-  font-weight: 450;
-  letter-spacing: -0.012em;
+  font-family: var(--font-sans);
+  font-size: 1.35rem !important;
+  line-height: 1.4 !important;
+  font-weight: 650;
+  letter-spacing: -0.01em;
   margin-bottom: 12px;
 }
 .task-note {
@@ -2153,7 +2112,7 @@ a.lesson-row-link:hover {
 }
 .choices {
   display: grid;
-  gap: 10px;
+  gap: 8px;
   margin: 20px 0;
 }
 .choice {
@@ -2165,19 +2124,17 @@ a.lesson-row-link:hover {
   font-size: 1rem;
   padding: 14px 16px;
   border-radius: var(--r);
-  border: 1px solid var(--line-2);
+  border: 1.5px solid var(--line-2);
   background: var(--surface);
   color: var(--ink);
   cursor: pointer;
-  box-shadow: var(--shadow-xs);
-  transition: border-color 0.15s, background-color 0.15s, transform 0.1s, box-shadow 0.15s;
+  transition: border-color 0.14s, background-color 0.14s;
 }
 .choice:hover:not(:disabled) {
-  border-color: var(--accent);
-  box-shadow: var(--ring);
+  border-color: var(--ink);
 }
 .choice:active:not(:disabled) {
-  transform: scale(0.995);
+  transform: translateY(1px);
 }
 .choice:disabled {
   cursor: default;
@@ -2186,21 +2143,22 @@ a.lesson-row-link:hover {
   flex: none;
   width: 28px;
   height: 28px;
-  border-radius: 7px;
   display: grid;
   place-items: center;
-  background: var(--surface-3);
-  color: var(--ink-2);
+  background: var(--sq-light);
+  color: #1b1612;
   font-family: var(--font-mono);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.78rem;
-  transition: background-color 0.15s, color 0.15s;
+  transition: background-color 0.14s, color 0.14s;
+}
+.choice:nth-child(even) .choice-letter {
+  background: var(--sq-dark);
 }
 .choice.wrong {
-  border-color: color-mix(in srgb, var(--bad) 50%, transparent);
+  border-color: var(--bad);
   background: var(--bad-soft);
   color: var(--ink-2);
-  box-shadow: none;
   animation: shake 0.35s var(--ease);
 }
 .choice.wrong .choice-letter {
@@ -2210,7 +2168,6 @@ a.lesson-row-link:hover {
 .choice.right {
   border-color: var(--good);
   background: var(--good-soft);
-  box-shadow: 0 0 0 1px var(--good);
 }
 .choice.right .choice-letter {
   background: var(--good);
@@ -2241,6 +2198,7 @@ a.lesson-row-link:hover {
   margin: 20px 0;
   font-size: 0.95rem;
   border: 1px solid transparent;
+  border-left-width: 4px;
   animation: step-in 0.25s var(--ease) both;
 }
 .feedback .icon {
@@ -2249,27 +2207,26 @@ a.lesson-row-link:hover {
 }
 .feedback-good {
   background: var(--good-soft);
-  border-color: color-mix(in srgb, var(--good) 30%, transparent);
+  border-color: var(--good);
   color: var(--good);
 }
 .feedback-bad {
   background: var(--bad-soft);
-  border-color: color-mix(in srgb, var(--bad) 28%, transparent);
+  border-color: var(--bad);
   color: var(--bad);
 }
 .feedback-bad::before,
 .feedback-info::before {
   content: '';
   flex: none;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+  width: 7px;
+  height: 7px;
   background: currentColor;
-  margin: 9px 4px 0 4px;
+  margin: 8px 4px 0 4px;
 }
 .feedback-info {
   background: var(--info-soft);
-  border-color: color-mix(in srgb, var(--info) 25%, transparent);
+  border-color: var(--info);
   color: var(--info);
 }
 .feedback span {
@@ -2277,21 +2234,21 @@ a.lesson-row-link:hover {
 }
 
 .explain {
-  border-left: 3px solid var(--good);
+  border: var(--border-strong);
+  border-left: 4px solid var(--good);
   background: var(--surface);
-  border-radius: 0 var(--r) var(--r) 0;
+  border-radius: var(--r);
   padding: 14px 18px;
   margin-top: 16px;
-  box-shadow: var(--shadow-xs);
   animation: step-in 0.3s var(--ease) both;
 }
 .explain p {
   margin-bottom: 0;
 }
 .explain-label {
-  font-size: 0.72rem;
-  font-weight: 650;
-  letter-spacing: 0.09em;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--good);
   margin-bottom: 4px;
@@ -2300,10 +2257,10 @@ a.lesson-row-link:hover {
 /* Kibitzer */
 .kibitzer {
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: var(--border-strong);
+  border-top: 3px solid var(--ink);
   border-radius: var(--r-lg);
   padding: 18px 20px;
-  box-shadow: var(--shadow-sm);
 }
 .kibitzer-inline {
   margin-top: 32px;
@@ -2320,9 +2277,9 @@ a.lesson-row-link:hover {
 }
 .kibitzer-name {
   font-family: var(--font-display);
-  font-weight: 550;
-  font-size: 1.1rem;
-  line-height: 1.2;
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
 }
 .kibitzer-role {
   font-size: 0.8rem;
@@ -2331,17 +2288,18 @@ a.lesson-row-link:hover {
 .rung-meter {
   margin-left: auto;
   display: inline-flex;
-  gap: 3px;
+  gap: 2px;
 }
 .rung-meter span {
-  width: 14px;
-  height: 4px;
-  border-radius: 2px;
+  width: 10px;
+  height: 10px;
   background: var(--surface-3);
-  transition: background-color 0.2s;
+  border: 1px solid var(--line-2);
+  transition: background-color 0.14s;
 }
 .rung-meter .is-on {
-  background: var(--accent);
+  background: var(--sq-dark);
+  border-color: var(--sq-dark);
 }
 .kibitzer-say {
   position: relative;
@@ -2351,11 +2309,11 @@ a.lesson-row-link:hover {
   margin-bottom: 12px;
   padding: 12px 14px;
   background: var(--surface-2);
-  border-radius: 4px var(--r) var(--r) var(--r);
+  border-left: 3px solid var(--sq-dark);
 }
 .kibitzer-question {
   color: var(--ink);
-  font-weight: 500;
+  font-weight: 600;
 }
 .kibitzer-note {
   color: var(--ink-3);
@@ -2390,11 +2348,11 @@ a.lesson-row-link:hover {
 }
 .field-label {
   display: block;
-  font-family: var(--font-display);
-  font-weight: 450;
-  font-size: 1.4rem;
-  line-height: 1.35;
-  letter-spacing: -0.012em;
+  font-family: var(--font-sans);
+  font-weight: 650;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
   margin-bottom: 14px;
 }
 .textarea {
@@ -2403,22 +2361,21 @@ a.lesson-row-link:hover {
   font-size: 1rem;
   color: var(--ink);
   background: var(--surface);
-  border: 1px solid var(--line-2);
+  border: 1.5px solid var(--line-2);
   border-radius: var(--r);
   padding: 14px 16px;
   resize: vertical;
   margin-bottom: 12px;
   line-height: 1.65;
-  box-shadow: var(--shadow-xs) inset;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.14s, box-shadow 0.14s;
 }
 .textarea::placeholder {
   color: var(--ink-4);
 }
 .textarea:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: var(--ring);
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .wrap-grid {
@@ -2434,7 +2391,7 @@ a.lesson-row-link:hover {
   margin-bottom: 8px;
 }
 .mastery .big-number {
-  font-size: 3rem;
+  font-size: 3.4rem;
 }
 .links-grid {
   display: grid;
@@ -2453,8 +2410,8 @@ a.lesson-row-link:hover {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 12px;
-  box-shadow: 0 0 0 1px var(--board-edge), var(--shadow);
+  border: 3px solid var(--board-frame);
+  border-radius: var(--r-sm);
   touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
@@ -2491,19 +2448,19 @@ a.lesson-row-link:hover {
   stroke-width: 6;
 }
 .sq-mark-pick {
-  stroke: var(--accent);
-  fill: color-mix(in srgb, var(--accent) 22%, transparent);
+  stroke: #1b1612;
+  fill: rgba(27, 22, 18, 0.12);
 }
 .sq-mark-good {
-  stroke: var(--good);
-  fill: color-mix(in srgb, var(--good) 24%, transparent);
+  stroke: #3d7536;
+  fill: rgba(61, 117, 54, 0.28);
 }
 .sq-mark-bad {
-  stroke: var(--bad);
-  fill: color-mix(in srgb, var(--bad) 24%, transparent);
+  stroke: #a8382c;
+  fill: rgba(168, 56, 44, 0.28);
 }
 .sq-mark-focus {
-  stroke: var(--ink);
+  stroke: #1b1612;
   fill: none;
 }
 .sq-hit {
@@ -2511,19 +2468,20 @@ a.lesson-row-link:hover {
   transition: fill 0.12s;
 }
 .is-interactive .sq-hit:hover {
-  fill: rgba(255, 255, 255, 0.12);
+  fill: rgba(255, 255, 255, 0.16);
 }
 .sq-hit:focus {
   outline: none;
 }
 .sq-hit:focus-visible {
-  stroke: var(--accent);
+  stroke: #1b1612;
   stroke-width: 6;
 }
+/* Coordinates sit in the corners, in the colour of the opposite square. */
 .coord {
-  font-family: var(--font-mono);
-  font-size: 17px;
-  font-weight: 600;
+  font-family: var(--font-sans);
+  font-size: 20px;
+  font-weight: 700;
   pointer-events: none;
 }
 .coord-on-dark {
@@ -2544,13 +2502,12 @@ a.lesson-row-link:hover {
 }
 .arrow {
   stroke: var(--board-arrow);
-  stroke-width: 14;
-  stroke-linecap: round;
+  stroke-width: 13;
+  stroke-linecap: butt;
   pointer-events: none;
 }
 .piece {
   pointer-events: none;
-  filter: drop-shadow(0 1.5px 1px rgba(0, 0, 0, 0.18));
 }
 .board-tools {
   display: flex;
@@ -2583,7 +2540,7 @@ a.lesson-row-link:hover {
   padding: 0;
   margin: 20px 0 48px;
   display: grid;
-  border: 1px solid var(--line);
+  border: var(--border-strong);
   border-radius: var(--r-lg);
   background: var(--surface);
   overflow: hidden;
@@ -2594,14 +2551,14 @@ a.lesson-row-link:hover {
   padding: 18px 20px;
 }
 .spine li + li {
-  border-top: 1px solid var(--line);
+  border-top: var(--border);
 }
 .spine h3 {
   margin: 0 0 4px;
   font-family: var(--font-sans);
-  font-weight: 600;
+  font-weight: 650;
   font-size: 1rem;
-  letter-spacing: -0.005em;
+  letter-spacing: 0;
 }
 .spine p {
   margin: 0;
@@ -2612,14 +2569,17 @@ a.lesson-row-link:hover {
   flex: none;
   width: 28px;
   height: 28px;
-  border-radius: 8px;
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: var(--sq-light);
+  border: 1px solid var(--sq-dark);
+  color: #1b1612;
   display: grid;
   place-items: center;
   font-family: var(--font-mono);
   font-size: 0.78rem;
-  font-weight: 600;
+  font-weight: 700;
+}
+.spine li:nth-child(even) .spine-num {
+  background: var(--sq-dark);
 }
 .plain-list {
   padding-left: 0;
@@ -2637,12 +2597,11 @@ a.lesson-row-link:hover {
   content: '';
   position: absolute;
   left: 4px;
-  top: 0.55em;
+  top: 0.5em;
   width: 10px;
   height: 10px;
-  border-radius: 3px;
-  background: var(--accent-soft);
-  box-shadow: inset 0 0 0 1.5px var(--accent);
+  background: linear-gradient(90deg, var(--sq-light) 50%, var(--sq-dark) 50%);
+  outline: 1px solid var(--sq-dark);
 }
 .page.narrow h2 {
   margin-top: 8px;
@@ -2652,14 +2611,14 @@ a.lesson-row-link:hover {
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
   gap: 32px;
-  border-top: 1px solid var(--line);
+  border-top: var(--border);
   padding: 32px 0;
 }
 .settings-section h2 {
   font-family: var(--font-sans);
   font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: -0.005em;
+  font-weight: 650;
+  letter-spacing: 0;
   margin: 4px 0 0;
 }
 .settings-section p {
@@ -2667,31 +2626,32 @@ a.lesson-row-link:hover {
 }
 .segmented {
   display: inline-flex;
-  background: var(--surface-3);
-  border-radius: 10px;
-  padding: 3px;
-  gap: 2px;
+  border: 1.5px solid var(--ink);
+  border-radius: var(--r-sm);
+  overflow: hidden;
   flex-wrap: wrap;
 }
 .segmented button {
   font: inherit;
   font-size: 0.875rem;
-  font-weight: 520;
+  font-weight: 600;
   border: none;
-  background: none;
+  background: var(--surface);
   color: var(--ink-2);
-  padding: 8px 14px;
-  border-radius: 8px;
+  padding: 8px 16px;
   cursor: pointer;
-  transition: background-color 0.15s, color 0.15s;
+  transition: background-color 0.14s, color 0.14s;
+}
+.segmented button + button {
+  border-left: 1px solid var(--line-2);
 }
 .segmented button:hover {
   color: var(--ink);
+  background: var(--surface-2);
 }
 .segmented button.is-on {
-  background: var(--surface);
-  color: var(--ink);
-  box-shadow: var(--shadow-sm);
+  background: var(--btn-solid);
+  color: var(--btn-solid-ink);
 }
 
 /* ==========================================================================
@@ -2787,10 +2747,8 @@ a.lesson-row-link:hover {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
-    background: color-mix(in srgb, var(--surface) 90%, transparent);
-    backdrop-filter: saturate(1.4) blur(14px);
-    -webkit-backdrop-filter: saturate(1.4) blur(14px);
-    border-top: 1px solid var(--line);
+    background: var(--surface);
+    border-top: 1.5px solid var(--ink);
   }
   .tabbar a {
     display: flex;
@@ -2798,15 +2756,14 @@ a.lesson-row-link:hover {
     align-items: center;
     gap: 2px;
     padding: 6px 0;
-    border-radius: 10px;
     color: var(--ink-3);
     text-decoration: none;
     font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.01em;
+    font-weight: 700;
+    letter-spacing: 0.02em;
   }
   .tabbar a.is-active {
-    color: var(--accent);
+    color: var(--ink);
   }
   .tabbar-icon {
     position: relative;
@@ -2814,11 +2771,12 @@ a.lesson-row-link:hover {
     place-items: center;
     width: 48px;
     height: 28px;
-    border-radius: 999px;
-    transition: background-color 0.2s;
+    border-radius: var(--r-sm);
+    transition: background-color 0.14s;
   }
   .tabbar a.is-active .tabbar-icon {
-    background: var(--accent-soft);
+    background: var(--sq-light);
+    color: #1b1612;
   }
   .tabbar-dot {
     position: absolute;
@@ -2826,7 +2784,6 @@ a.lesson-row-link:hover {
     right: 10px;
     width: 8px;
     height: 8px;
-    border-radius: 50%;
     background: var(--bad);
     box-shadow: 0 0 0 2px var(--surface);
   }
@@ -2835,13 +2792,10 @@ a.lesson-row-link:hover {
     padding: 28px var(--gutter) 16px;
   }
   .hero {
-    padding: 40px 0 56px;
+    padding: 40px 0 64px;
   }
   .hero-visual {
     padding: 0 0 56px;
-  }
-  .frame {
-    transform: none;
   }
   .float-kibitzer {
     left: 12px;
@@ -2862,10 +2816,10 @@ a.lesson-row-link:hover {
     padding-left: 0;
   }
   .stats > div:nth-child(n + 3) {
-    border-top: 1px solid var(--line);
+    border-top: var(--border);
   }
   .stats strong {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
   .section {
     padding: 64px 0;
@@ -2878,6 +2832,13 @@ a.lesson-row-link:hover {
   }
   .curr-strip {
     grid-template-columns: 1fr 1fr;
+  }
+  /* Keep the chequer alternating in a two-column grid. */
+  .curr-tile:nth-child(4n + 3) {
+    background: var(--sq-dark);
+  }
+  .curr-tile:nth-child(4n + 4) {
+    background: var(--sq-light);
   }
   .curr-tile {
     min-height: 0;
@@ -2940,7 +2901,7 @@ a.lesson-row-link:hover {
     padding: 24px 0;
   }
 
-  /* Lesson stepper collapses to a compact progress read-out. */
+  /* Lesson stepper collapses to a rank of small squares. */
   .steps {
     padding: 12px 14px 14px;
   }
@@ -2958,19 +2919,19 @@ a.lesson-row-link:hover {
   }
   .steps-mobile strong {
     color: var(--ink);
-    font-weight: 600;
+    font-weight: 650;
   }
   .steps-list {
     flex-wrap: nowrap;
-    gap: 4px;
+    gap: 3px;
   }
   .steps-list li {
     flex: 1 1 0;
   }
   .step {
-    height: 6px;
+    height: 10px;
     padding: 0;
-    border-radius: 3px;
+    border-radius: 0;
     background: var(--surface-3);
     position: relative;
   }
@@ -2983,10 +2944,11 @@ a.lesson-row-link:hover {
     background: var(--line-2);
   }
   .step.is-done {
-    background: var(--accent-line);
+    background: var(--sq-light);
+    box-shadow: inset 0 0 0 1px var(--sq-dark);
   }
   .step.is-current {
-    background: var(--accent);
+    background: var(--sq-dark);
     box-shadow: none;
   }
   .step .step-num,
@@ -2995,7 +2957,7 @@ a.lesson-row-link:hover {
   }
   .task-prompt,
   .field-label {
-    font-size: 1.3rem !important;
+    font-size: 1.2rem !important;
   }
   .stage-text p {
     font-size: 1rem;
@@ -3005,6 +2967,12 @@ a.lesson-row-link:hover {
 @media (max-width: 420px) {
   .curr-strip {
     grid-template-columns: 1fr;
+  }
+  .curr-tile:nth-child(odd) {
+    background: var(--sq-light);
+  }
+  .curr-tile:nth-child(even) {
+    background: var(--sq-dark);
   }
   .hero-actions .btn {
     width: 100%;

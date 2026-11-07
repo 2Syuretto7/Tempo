@@ -16,10 +16,10 @@ export function KibitzerMark({ size = 34 }: { size?: number }) {
   // An onlooker's eye: the Kibitzer watches and asks, never plays.
   return (
     <svg viewBox="0 0 34 34" width={size} height={size} aria-hidden="true" class="kibitzer-mark">
-      <rect x="0.5" y="0.5" width="33" height="33" rx="10" fill="var(--accent-soft)" />
-      <path d="M7.5 17 C10.5 11.5 23.5 11.5 26.5 17 C23.5 22.5 10.5 22.5 7.5 17 Z" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round" />
-      <circle cx="17" cy="17" r="3.6" fill="var(--accent)" />
-      <circle cx="18.2" cy="15.8" r="1" fill="var(--surface)" />
+      <rect x="0.5" y="0.5" width="33" height="33" fill="#f0d9b5" stroke="#b58863" />
+      <path d="M7.5 17 C10.5 11.5 23.5 11.5 26.5 17 C23.5 22.5 10.5 22.5 7.5 17 Z" fill="#ffffff" stroke="#1b1612" stroke-width="1.6" stroke-linejoin="round" />
+      <circle cx="17" cy="17" r="3.6" fill="#1b1612" />
+      <circle cx="18.2" cy="15.8" r="1" fill="#ffffff" />
     </svg>
   );
 }

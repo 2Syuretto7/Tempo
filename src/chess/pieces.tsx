@@ -2,6 +2,7 @@ import type { Color, PieceType } from './position';
 
 // Tempo's own piece set, drawn on a 45 x 45 grid.
 // Staunton-inspired silhouettes, reduced to clean shapes so they stay crisp at any size.
+// Colours come from the design tokens: pure white and black, as on a printed diagram.
 // Every piece stands on the same two-tier plinth, which gives the set a shared baseline.
 
 interface Props {
@@ -17,7 +18,7 @@ const PLINTH = (
 );
 
 function shapes(type: PieceType, detail: string) {
-  const line = { fill: 'none', stroke: detail, 'stroke-width': 1.3 };
+  const line = { fill: 'none', stroke: detail, 'stroke-width': 1.4 };
   switch (type) {
     case 'p':
       return (
@@ -91,7 +92,7 @@ export function PieceGlyph({ type, color }: Props) {
   const stroke = color === 'w' ? 'var(--piece-light-edge)' : 'var(--piece-dark-edge)';
   const detail = color === 'w' ? 'var(--piece-light-edge)' : 'var(--piece-dark-detail)';
   return (
-    <g fill={fill} stroke={stroke} stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">
+    <g fill={fill} stroke={stroke} stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
       {shapes(type, detail)}
     </g>
   );
