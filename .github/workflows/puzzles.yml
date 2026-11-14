@@ -1,0 +1,21 @@
+name: Refresh puzzle set
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download the Lichess puzzle database (CC0)
+        run: curl -sSfL https://database.lichess.org/lichess_db_puzzle.csv.zst -o puzzles.csv.zst
+      - name: Select Tempo's set
+        run: zstd -dc puzzles.csv.zst | python3 scripts/select_puzzles.py
+      - name: Commit
+        run: |
+          git config user.name "tempo-bot"
+          git config user.email "tempo-bot@users.noreply.github.com"
+          git add data/puzzles.csv
+          git commit -m "Refresh puzzle set from the Lichess database" || echo "No change"
+          git push
