@@ -18,9 +18,7 @@ export async function POST(req: Request) {
       exercise = item.generate(Number(body.seed) || 0);
       return hint({ nodeId: owner.id, exercise, hintLevel: Number(body.hintLevel) || 1 }, sanitise(body.messages));
     }
-    if (body.purpose === "explain") {
-      theoryText = `The learner is writing, in their own words, an answer to: "${node.explainPrompt}". Never write the explanation for them and never list the key points. Ask one question at a time that helps them find their own words, or point out gently where their thinking is unclear.`;
-    } else if (typeof body.step === "number") {
+    if (typeof body.step === "number") {
       const step = node.theory[body.step];
       theoryText = step?.text;
       exercise = step?.tryIt;

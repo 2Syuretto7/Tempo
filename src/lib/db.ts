@@ -31,8 +31,6 @@ CREATE TABLE IF NOT EXISTS node_progress (
   node_id TEXT NOT NULL,
   started_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   theory_done_at TIMESTAMPTZ,
-  explanation TEXT,
-  explanation_ok BOOLEAN NOT NULL DEFAULT FALSE,
   mastered_at TIMESTAMPTZ,
   PRIMARY KEY (user_id, node_id)
 );

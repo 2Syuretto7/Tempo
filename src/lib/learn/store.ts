@@ -8,8 +8,8 @@ const scheduler = fsrs(generatorParameters({ enable_short_term: false, request_r
 
 export async function loadState(userId: number) {
   const [nodes, attempts, cards] = await Promise.all([
-    sql<{ node_id: string; started_at: string; theory_done_at: string | null; explanation_ok: boolean; mastered_at: string | null }>(
-      "SELECT node_id, started_at, theory_done_at, explanation_ok, mastered_at FROM node_progress WHERE user_id = $1",
+    sql<{ node_id: string; started_at: string; theory_done_at: string | null; mastered_at: string | null }>(
+      "SELECT node_id, started_at, theory_done_at, mastered_at FROM node_progress WHERE user_id = $1",
       [userId],
     ),
     sql<{ node_id: string; item_id: string; correct: boolean; hints: number; phase: string; at: string }>(
@@ -25,7 +25,6 @@ export async function loadState(userId: number) {
         nodeId: n.node_id,
         startedAt: new Date(n.started_at),
         theoryDone: !!n.theory_done_at,
-        explanationOk: !!n.explanation_ok,
         masteredAt: n.mastered_at ? new Date(n.mastered_at) : null,
       })),
     attempts: attempts
@@ -43,17 +42,6 @@ export async function startNode(userId: number, nodeId: string) {
 export async function markTheoryDone(userId: number, nodeId: string) {
   await startNode(userId, nodeId);
   await sql("UPDATE node_progress SET theory_done_at = COALESCE(theory_done_at, now()) WHERE user_id = $1 AND node_id = $2", [userId, nodeId]);
-  await checkMastery(userId, nodeId);
-}
-
-export async function saveExplanation(userId: number, nodeId: string, text: string, ok: boolean) {
-  await startNode(userId, nodeId);
-  await sql("UPDATE node_progress SET explanation = $3, explanation_ok = (explanation_ok OR $4) WHERE user_id = $1 AND node_id = $2", [
-    userId,
-    nodeId,
-    text,
-    ok,
-  ]);
   await checkMastery(userId, nodeId);
 }
 

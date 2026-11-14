@@ -92,7 +92,6 @@ export const rook: LearningNode = {
     "cannot jump over pieces",
     "captures by moving onto an enemy piece's square",
   ],
-  explainPrompt: "Explain how a rook moves and captures, as if teaching a friend at their first lesson. When is a rook blocked?",
   theory: [
     {
       text: "The rook moves in straight lines: up and down its **file**, or left and right along its **rank**, as many squares as it likes. Here are all its moves from d4.",
@@ -139,7 +138,6 @@ export const bishop: LearningNode = {
     "cannot jump over pieces",
     "always stays on the same colour of square",
   ],
-  explainPrompt: "Explain how a bishop moves, and why a bishop that starts on a dark square can never reach a light square.",
   theory: [
     {
       text: "The bishop moves along **diagonals**, as many squares as it likes. Here are its moves from d4.",
@@ -206,7 +204,6 @@ export const queen: LearningNode = {
   related: ["chess.values"],
   summary: "The queen moves like a rook and a bishop combined: any distance along files, ranks or diagonals, without jumping.",
   keyPoints: ["moves like a rook and a bishop combined", "files, ranks and diagonals", "any distance", "cannot jump"],
-  explainPrompt: "Explain the queen's move using what you already know about the rook and the bishop.",
   theory: [
     {
       text: "You already know the queen. She moves like a **rook** (files and ranks) **and** like a **bishop** (diagonals), any distance. From d4 she reaches 27 squares on an empty board.",
@@ -239,7 +236,6 @@ export const knight: LearningNode = {
   related: ["chess.bishop"],
   summary: "The knight moves in an L: two squares in one direction and one at right angles. It jumps over pieces and always lands on the opposite colour.",
   keyPoints: ["moves in an L shape: two then one at right angles", "jumps over pieces", "always changes square colour", "captures only on its landing square"],
-  explainPrompt: "Explain the knight's move to a friend. What makes it different from every other piece?",
   theory: [
     {
       text: "The knight moves in an **L**: two squares straight in one direction, then one square to the side. From d4 that gives eight landing squares.",
@@ -299,7 +295,6 @@ export const king: LearningNode = {
   related: ["chess.check"],
   summary: "The king moves one square in any direction and may never step onto a square an enemy piece attacks.",
   keyPoints: ["one square in any direction", "can capture an enemy piece next to it", "may never move onto an attacked square", "the game is about trapping the king"],
-  explainPrompt: "Explain how the king moves, and the one rule about danger that no other piece has.",
   theory: [
     {
       text: "The king is the most important piece and one of the slowest: **one square in any direction**.",
@@ -367,7 +362,6 @@ export const pawn: LearningNode = {
     "cannot capture straight ahead and is blocked by any piece in front",
     "never moves backwards",
   ],
-  explainPrompt: "Explain how a pawn moves and how it captures. Why is it the only piece that moves one way and captures another?",
   theory: [
     {
       text: "Pawns only move **forward**, one square at a time. White pawns move up the board, black pawns down.",

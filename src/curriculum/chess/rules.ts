@@ -22,7 +22,6 @@ export const values: LearningNode = {
     "values come from how much each piece can do",
     "use them to judge trades: what you win minus what you lose",
   ],
-  explainPrompt: "Explain why a rook is worth more than a knight, and how you would use piece values to decide whether a trade is good.",
   theory: [
     {
       text: "Pieces are not equal. Players use a simple scale: **pawn 1, knight 3, bishop 3, rook 5, queen 9**. The king has no number: it can never be captured, and losing it is losing the game.",
@@ -135,7 +134,6 @@ export const check: LearningNode = {
     "three ways out: move the king, block the line, capture the attacker",
     "you may never make a move that leaves your own king in check",
   ],
-  explainPrompt: "Explain what check is and the three ways to get out of it. Why can't you block a check from a knight?",
   theory: [
     {
       text: "When a piece attacks the king, the king is **in check**. Here the rook on e8 attacks the white king along the e-file.",
@@ -278,7 +276,6 @@ export const checkmate: LearningNode = {
     "checkmate wins the game immediately",
     "the king is never actually captured",
   ],
-  explainPrompt: "Explain how you would check whether a position is checkmate. Walk through the test you use.",
   theory: [
     {
       text: "**Checkmate** is check with no way out: the king cannot move to safety, the check cannot be blocked, and the attacker cannot be captured. The game ends at once; the king is never actually taken.",
@@ -335,7 +332,6 @@ export const stalemate: LearningNode = {
     "the result is a draw, not a win",
     "when winning, always leave the enemy king a move unless you are giving mate",
   ],
-  explainPrompt: "Explain the difference between checkmate and stalemate, and why a player who is far ahead must be careful about stalemate.",
   theory: [
     {
       text: "Black to move. The king is **not in check**, but every square around it is covered: g8 by the queen, g7 and h7 by queen and king. Black has no legal move. This is **stalemate**, and the game is a **draw**.",
@@ -408,7 +404,6 @@ export const castling: LearningNode = {
     "the king may not be in check, pass through an attacked square, or land in check",
     "its purpose is king safety and bringing the rook into play",
   ],
-  explainPrompt: "Explain how castling works and list the conditions that must all be true. Why does the rule care about the king's path but not the rook's?",
   theory: [
     {
       text: "**Castling** is the only move where two pieces move at once. The king steps **two squares** towards a rook, and the rook hops over to the square the king crossed.",
@@ -472,7 +467,6 @@ export const promotion: LearningNode = {
     "you may have more than one queen",
     "choose a queen unless another piece is better (for example to avoid stalemate)",
   ],
-  explainPrompt: "Explain promotion and why a passed pawn near the end of the board is so dangerous.",
   theory: [
     {
       text: "A pawn that reaches the far end of the board **must promote**: it is replaced by a queen, rook, bishop or knight of its own colour. Not a king, and it cannot stay a pawn.",
@@ -526,7 +520,6 @@ export const enPassant: LearningNode = {
     "you capture diagonally onto the square it skipped",
     "the chance lasts only for the very next move",
   ],
-  explainPrompt: "Explain en passant step by step. Why do you think this rule exists?",
   theory: [
     {
       text: "Your pawn stands on e5. Black's pawn starts on d7. If Black could only move one square, to d6, your pawn could capture it.",
@@ -592,7 +585,6 @@ export const draws: LearningNode = {
     "threefold repetition of the same position",
     "the fifty-move rule: fifty moves each with no capture and no pawn move",
   ],
-  explainPrompt: "Explain the ways a chess game can end in a draw, and why king and knight cannot beat a lone king.",
   theory: [
     {
       text: "Not every game has a winner. A **draw** is half a point each. You already know one way: **stalemate**. There are four more.",
@@ -662,7 +654,6 @@ export const notation: LearningNode = {
     "x means a capture; a pawn capture names the pawn's file (exd5)",
     "+ is check, # is checkmate, O-O and O-O-O are castling",
   ],
-  explainPrompt: "Explain how to read the move Nxe5+ and how to write a pawn on d4 capturing on e5.",
   theory: [
     {
       text: "Chess has a language for moves, so you can record games and read books. Each piece has a capital letter: **K** king, **Q** queen, **R** rook, **B** bishop, **N** knight (K is taken). **Pawns have no letter.**",
@@ -747,7 +738,6 @@ export const setup: LearningNode = {
     "White moves first and players alternate",
     "the aim is checkmate",
   ],
-  explainPrompt: "Explain to a friend how to set up the pieces from an empty board, and what they are trying to do once the game starts.",
   theory: [
     {
       text: "You now know every piece and every rule. Here is where they all begin. Start with the board: **light on the right**.",

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export type KibitzerTarget = { nodeId: string; itemId?: string; seed?: number; step?: number; purpose?: "explain"; puzzleId?: string; ply?: number };
+export type KibitzerTarget = { nodeId: string; itemId?: string; seed?: number; step?: number; puzzleId?: string; ply?: number };
 type Msg = { role: "user" | "assistant"; content: string };
 
 type Props = {

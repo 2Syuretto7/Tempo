@@ -5,7 +5,6 @@ import type { Exercise } from "@/curriculum/types";
 import { checkMoves, mateMoves, PIECE_NAMES, piecesOf } from "@/lib/chess";
 
 const HINT_MODEL = process.env.KIBITZER_MODEL ?? "claude-sonnet-5-5";
-const JUDGE_MODEL = process.env.KIBITZER_JUDGE_MODEL ?? "claude-opus-5-5";
 
 function client() {
   return process.env.ANTHROPIC_API_KEY ? new Anthropic() : null;
@@ -143,50 +142,3 @@ export async function hint(ctx: KibitzerContext, history: ChatTurn[]): Promise<{
   }
 }
 
-export type Judgement = { ok: boolean; feedback: string; offline?: boolean };
-
-/** Feynman's test: can you explain it simply? Kibitzer checks the explanation against the lesson's key points. */
-export async function judgeExplanation(nodeId: string, text: string): Promise<Judgement> {
-  const node = getNode(nodeId);
-  const words = text.trim().split(/\s+/).filter(Boolean).length;
-  if (words < 12) return { ok: false, feedback: "Say a little more. Imagine your friend has never seen a chessboard: what would they need to hear?" };
-  const anthropic = client();
-  if (!anthropic) {
-    return words >= 25
-      ? { ok: true, offline: true, feedback: "Saved to your notes. (Kibitzer is offline, so this was not checked in detail.)" }
-      : { ok: false, offline: true, feedback: "Try to cover every part of the idea, in full sentences." };
-  }
-  try {
-    const res = await anthropic.messages.create({
-      model: JUDGE_MODEL,
-      max_tokens: 600,
-      system: [
-        "You are Kibitzer, a Feynman-inspired tutor. A beginner has explained a chess idea in their own words, as if teaching a friend. Judge whether the explanation shows real understanding.",
-        `Idea: ${node.title}. ${node.summary}`,
-        `Key points a complete explanation covers: ${node.keyPoints.map((k, i) => `${i + 1}. ${k}`).join(" ")}`,
-        "Set ok to true when every key point is present in substance, in any wording, with no real misconception. Small imprecision is fine; a missing or wrong point is not.",
-        "feedback: if ok, one sentence naming what was explained especially well, then optionally one question that deepens it. If not ok, do NOT state the missing point; ask one Socratic question that leads the learner to discover it, and mention any misconception gently. Under 60 words, Indian English, no emojis, speak to the learner as 'you'.",
-      ].join("\n\n"),
-      messages: [{ role: "user", content: `${node.explainPrompt}\n\nMy explanation:\n${text.slice(0, 4000)}` }],
-      output_config: {
-        format: {
-          type: "json_schema",
-          schema: {
-            type: "object",
-            properties: { ok: { type: "boolean" }, feedback: { type: "string" } },
-            required: ["ok", "feedback"],
-            additionalProperties: false,
-          },
-        },
-      },
-    });
-    const raw = res.content.map((b) => (b.type === "text" ? b.text : "")).join("");
-    const parsed = JSON.parse(raw) as Judgement;
-    return { ok: !!parsed.ok, feedback: String(parsed.feedback ?? "") };
-  } catch (err) {
-    console.error("Kibitzer judge error", err);
-    return words >= 25
-      ? { ok: true, offline: true, feedback: "Saved to your notes. (Kibitzer could not be reached, so this was not checked in detail.)" }
-      : { ok: false, offline: true, feedback: "Try to cover every part of the idea, in full sentences." };
-  }
-}

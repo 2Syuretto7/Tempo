@@ -94,7 +94,7 @@ describe("drills", () => {
 describe("planner with puzzles", () => {
   const now = new Date("2026-11-20T10:00:00+05:30");
   const day = (d: number) => new Date(now.getTime() - d * 864e5);
-  const nodes = [{ nodeId: "chess.board", startedAt: day(5), theoryDone: true, explanationOk: true, masteredAt: day(3) }];
+  const nodes = [{ nodeId: "chess.board", startedAt: day(5), theoryDone: true, masteredAt: day(3) }];
 
   it("adds the day's puzzles when the room is open, without blocking a new idea", () => {
     const p = plan({ now, nodes, attempts: [], dueCards: [], puzzles: { open: true, doneToday: 2 }, seed: () => 1 });

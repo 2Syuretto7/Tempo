@@ -63,9 +63,8 @@ export type LearningNode = {
   related: string[];
   /** One sentence: the idea itself. */
   summary: string;
-  /** What a complete explanation must contain (used by Kibitzer to judge). */
+  /** The essentials of the idea; Kibitzer aims its hints at them. */
   keyPoints: string[];
-  explainPrompt: string;
   theory: TheoryStep[];
   items: Item[];
 };

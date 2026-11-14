@@ -10,12 +10,11 @@ import type { LearningNode } from "@/curriculum/types";
 export type Phase = "review" | "recall" | "guided" | "independent" | "consolidate" | "repair" | "try";
 
 export type Attempt = { nodeId: string; itemId: string; correct: boolean; hints: number; phase: Phase; at: Date };
-export type NodeState = { nodeId: string; startedAt: Date; theoryDone: boolean; explanationOk: boolean; masteredAt: Date | null };
+export type NodeState = { nodeId: string; startedAt: Date; theoryDone: boolean; masteredAt: Date | null };
 export type DueCard = { itemId: string; nodeId: string; due: Date };
 
 export type Activity =
   | { type: "theory"; nodeId: string }
-  | { type: "explain"; nodeId: string }
   | { type: "reflect"; nodeId: string }
   | { type: "exercise"; nodeId: string; itemId: string; seed: number; phase: Phase }
   /** A real puzzle from the Puzzles room, chosen when it is reached; nodeId is nominal. */
@@ -55,9 +54,9 @@ export function localDay(d: Date, timeZone = RULES.timeZone): string {
   return new Intl.DateTimeFormat("en-CA", { timeZone, year: "numeric", month: "2-digit", day: "2-digit" }).format(d);
 }
 
-/** Has this node been earned? Accurate without hints, on two separate days, explained correctly. */
+/** Has this node been earned? Accurate without hints, on two separate days, after the theory. */
 export function isMastered(node: NodeState | undefined, attempts: Attempt[]): boolean {
-  if (!node || !node.theoryDone || !node.explanationOk) return false;
+  if (!node || !node.theoryDone) return false;
   const recent = attempts
     .filter((a) => a.nodeId === node.nodeId && MASTERY_PHASES.includes(a.phase) && a.hints === 0)
     .sort((a, b) => b.at.getTime() - a.at.getTime())
@@ -170,14 +169,12 @@ export function plan(state: LearnerState): Plan {
     if (startedToday) {
       const acts: Activity[] = [];
       if (!n.theoryDone) acts.push({ type: "theory", nodeId: node.id });
-      if (!n.explanationOk) acts.push({ type: "explain", nodeId: node.id });
       const target = RULES.guidedPerNode + RULES.independentPerNode;
       for (let i = practisedToday; i < target; i++) acts.push(exercise(node, i, i < RULES.guidedPerNode ? "guided" : "independent", seed));
       if (acts.length) blocks.push({ title: node.title, kind: "continue", nodeId: node.id, activities: acts });
-    } else if (practisedToday === 0 || !n.theoryDone || !n.explanationOk) {
+    } else if (practisedToday === 0 || !n.theoryDone) {
       const acts: Activity[] = [];
       if (!n.theoryDone) acts.push({ type: "theory", nodeId: node.id });
-      if (!n.explanationOk) acts.push({ type: "explain", nodeId: node.id });
       if (practisedToday === 0) {
         const pool = interleavePool(node, mastered);
         for (let i = 0; i < RULES.consolidatePerNode; i++) {
@@ -216,7 +213,6 @@ export function newNodeBlock(node: LearningNode, mastered: Set<string>, seed: ()
   // Recall: retrieve the prerequisites from memory before building on them.
   for (const p of node.prereqs.filter((x) => mastered.has(x)).slice(0, 2)) acts.push(exercise(getNode(p), 0, "recall", seed));
   acts.push({ type: "theory", nodeId: node.id });
-  acts.push({ type: "explain", nodeId: node.id });
   for (let i = 0; i < RULES.guidedPerNode; i++) acts.push(exercise(node, i, "guided", seed));
   const pool = interleavePool(node, mastered);
   for (let i = 0; i < RULES.independentPerNode; i++) {

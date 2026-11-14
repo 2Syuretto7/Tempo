@@ -33,12 +33,11 @@ describe("knowledge graph", () => {
   it("is acyclic", () => {
     expect(topoOrder().length).toBe(NODES.length);
   });
-  it("every node has theory, practice, key points and an explain prompt", () => {
+  it("every node has theory, practice, and key points", () => {
     for (const n of NODES) {
       expect(n.theory.length, n.id).toBeGreaterThan(0);
       expect(n.items.length, n.id).toBeGreaterThan(0);
       expect(n.keyPoints.length, n.id).toBeGreaterThan(2);
-      expect(n.explainPrompt.length, n.id).toBeGreaterThan(20);
     }
   });
   it("item ids are unique and namespaced by node", () => {

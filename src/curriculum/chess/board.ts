@@ -20,8 +20,6 @@ export const board: LearningNode = {
     "a square's name is its file letter then its rank number",
     "the bottom-right corner (h1) is a light square: light on the right",
   ],
-  explainPrompt:
-    "Explain to a friend who has never seen a chessboard how to find the square c6, and how they can check the board is the right way round.",
   theory: [
     {
       text: "A chessboard is a grid of **64 squares**, 8 across and 8 up. Every square has a name. Once you can name squares instantly, every later lesson becomes easier, so we start here, slowly.",
