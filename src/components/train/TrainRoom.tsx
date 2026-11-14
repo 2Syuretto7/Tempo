@@ -5,7 +5,7 @@ import type { DrillId, DrillInfo } from "@/lib/train/drills";
 import { Button } from "@/components/ui/Button";
 import { FindChecks, KnightRoute, NameSquare, FindSquare, type DrillDone } from "./Drills";
 
-export type DrillCard = DrillInfo & { open: boolean; nodeTitle: string; best: { best: number; total: number; runs: number } | null };
+export type DrillCard = DrillInfo & { ready: boolean; nodeTitle: string; best: { best: number; total: number; runs: number } | null };
 
 export function TrainRoom({ drills: initial }: { drills: DrillCard[] }) {
   const [drills, setDrills] = useState(initial);
@@ -83,20 +83,19 @@ export function TrainRoom({ drills: initial }: { drills: DrillCard[] }) {
       <div className="text-[12px] uppercase tracking-[0.08em] font-medium text-meta">Train</div>
       <h1 className="mt-4 text-[40px] leading-[43px] tracking-[-1.2px]">Short drills, done often.</h1>
       <p className="mt-4 text-[18px] leading-[28.8px] text-body max-w-[620px]">
-        Each drill sharpens one skill from a lesson until it is automatic. A few minutes a day is enough; each opens when you start its lesson in Learn.
+        Each drill sharpens one skill from a lesson until it is automatic. A few minutes a day is enough. Each works best once you have started its lesson in Learn, but every drill is open whenever you want it.
       </p>
       <div className="mt-10 grid gap-px bg-hairline border border-hairline rounded-[2px] overflow-hidden sm:grid-cols-2">
         {drills.map((d) => (
           <button
             key={d.id}
-            disabled={!d.open}
             onClick={() => (setActive(d.id), setLast(null), setRun((r) => r + 1))}
-            className="text-left bg-raised p-6 min-h-[148px] flex flex-col hover:bg-[#1b1b1b] transition-colors disabled:hover:bg-raised disabled:cursor-not-allowed"
+            className="text-left bg-raised p-6 min-h-[148px] flex flex-col hover:bg-[#1b1b1b] transition-colors"
           >
-            <span className={`text-[20px] leading-[26px] tracking-[-0.2px] ${d.open ? "text-ink" : "text-meta"}`}>{d.title}</span>
+            <span className={`text-[20px] leading-[26px] tracking-[-0.2px] text-ink`}>{d.title}</span>
             <span className="mt-2 text-[14px] leading-[22px] text-body">{d.summary}</span>
             <span className="mt-auto pt-4 font-mono text-[11px] uppercase tracking-[0.04em] text-meta">
-              {d.open ? (d.best ? `Best ${d.best.best}${d.unit === "ratio" ? ` / ${d.best.total}` : ""} · ${d.best.runs} run${d.best.runs === 1 ? "" : "s"}` : "Not tried yet") : `Opens with ${d.nodeTitle}`}
+              {d.best ? `Best ${d.best.best}${d.unit === "ratio" ? ` / ${d.best.total}` : ""} · ${d.best.runs} run${d.best.runs === 1 ? "" : "s"}` : d.ready ? "Not tried yet" : `Best after you start ${d.nodeTitle}`}
             </span>
           </button>
         ))}

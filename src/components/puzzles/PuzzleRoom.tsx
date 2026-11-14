@@ -6,7 +6,7 @@ import { Kibitzer, KIBITZER_ROOM } from "@/components/learn/Kibitzer";
 import { PuzzleView, type ClientPuzzle } from "./PuzzleView";
 
 type Theme = { id: string; name: string; count: number };
-type Next = { open: boolean; themes: Theme[]; rating: number; provisional: boolean; puzzle: ClientPuzzle | null };
+type Next = { open: boolean; ahead: boolean; mastered: boolean; themes: Theme[]; rating: number; provisional: boolean; puzzle: ClientPuzzle | null };
 
 export function PuzzleRoom() {
   const [data, setData] = useState<Next | null>(null);
@@ -17,10 +17,14 @@ export function PuzzleRoom() {
   const [hintSignal, setHintSignal] = useState(0);
   const [kOpen, setKOpen] = useState(false);
   const [ply, setPly] = useState(1);
+  const [ahead, setAhead] = useState(false);
 
-  const fetchNext = useCallback(async (t: string): Promise<Next | null> => {
+  const fetchNext = useCallback(async (t: string, a = false): Promise<Next | null> => {
     try {
-      const res = await fetch(`/api/puzzles/next${t ? `?theme=${encodeURIComponent(t)}` : ""}`, { cache: "no-store" });
+      const q = new URLSearchParams();
+      if (t) q.set("theme", t);
+      if (a) q.set("ahead", "1");
+      const res = await fetch(`/api/puzzles/next?${q}`, { cache: "no-store" });
       return res.ok ? await res.json() : null;
     } catch {
       return null;
@@ -43,9 +47,15 @@ export function PuzzleRoom() {
     };
   }, [fetchNext, show]);
 
-  const next = (t = theme) => {
+  const next = (t = theme, a = ahead) => {
     setData((d) => (d ? { ...d, puzzle: null } : d));
-    void fetchNext(t).then(show);
+    void fetchNext(t, a).then(show);
+  };
+
+  const goAhead = (a: boolean) => {
+    setAhead(a);
+    setTheme("");
+    next("", a);
   };
 
   if (error)
@@ -64,13 +74,18 @@ export function PuzzleRoom() {
     return (
       <Centered>
         <div className="text-[12px] uppercase tracking-[0.08em] font-medium text-meta">Puzzles</div>
-        <h1 className="mt-4 text-[40px] leading-[43px] tracking-[-1.2px]">Opens with checkmate.</h1>
+        <h1 className="mt-4 text-[32px] leading-[36px] md:text-[40px] md:leading-[43px] tracking-[-1.2px]">Best after checkmate.</h1>
         <p className="mt-4 text-[18px] leading-[28.8px] text-body max-w-[520px]">
-          Every puzzle here is a real position from a real game, and each uses only ideas you have already mastered. The first ones open when you master Checkmate in Learn.
+          Every puzzle here is a real position from a real game. Tempo recommends starting once you have mastered Checkmate in Learn, so each puzzle uses only ideas you know. You are free to start now.
         </p>
-        <Link href="/learn" className="mt-8 inline-flex h-10 px-5 items-center bg-white text-[#0d0d0d] rounded-[2px] font-medium">
-          Continue learning
-        </Link>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <Link href="/learn" className="inline-flex h-10 px-5 items-center bg-white text-[#0d0d0d] rounded-[2px] font-medium">
+            Continue learning
+          </Link>
+          <button onClick={() => goAhead(true)} className="inline-flex h-10 px-5 items-center border border-white text-ink rounded-[2px] font-medium hover:bg-overlay">
+            Try puzzles now
+          </button>
+        </div>
       </Centered>
     );
 
@@ -82,6 +97,16 @@ export function PuzzleRoom() {
           Rating {data.rating}
           {data.provisional ? "?" : ""}
         </span>
+        {data.mastered && (
+          <button
+            onClick={() => goAhead(!ahead)}
+            aria-pressed={ahead}
+            className={`h-8 px-2 text-[13px] rounded-[2px] border ${ahead ? "border-accent text-ink" : "border-hairline text-meta hover:text-ink"}`}
+            title="Include puzzles on ideas you have not mastered yet"
+          >
+            {ahead ? "All ideas" : "Mastered ideas"}
+          </button>
+        )}
         <label className="ml-auto flex items-center gap-2 text-[14px] text-meta">
           <span className="sr-only md:not-sr-only">Theme</span>
           <select
@@ -105,7 +130,7 @@ export function PuzzleRoom() {
         {data.puzzle ? (
           <PuzzleView key={`${count}:${data.puzzle.id}`} puzzle={data.puzzle} hints={hints} onHint={() => setHintSignal((s) => s + 1)} onPly={setPly} onContinue={() => next()} />
         ) : (
-          <p className="text-[16px] text-body">You have solved every puzzle open to you in this theme. Choose another, or learn a new idea to open more.</p>
+          <p className="text-[16px] text-body">You have solved every puzzle here. Choose another theme, or include ideas you have not mastered yet.</p>
         )}
       </main>
       <Kibitzer

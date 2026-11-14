@@ -2,7 +2,7 @@ import "server-only";
 import { sql } from "@/lib/db";
 import { START, update, type Glicko } from "@/lib/glicko";
 import { puzzles, type Puzzle } from "./data";
-import { isEligible, teachingThemes, THEME_NAMES, unlockedThemes } from "./themes";
+import { isEligible, teachingThemes, THEME_NAMES, unlockedThemes, writtenThemes } from "./themes";
 
 /** Missed puzzles come back after this many days. */
 const RETURN_AFTER_DAYS = 3;
@@ -20,8 +20,8 @@ export async function getRating(userId: number): Promise<Glicko> {
 }
 
 /** What the Puzzles room can offer right now. */
-export async function puzzleAccess(userId: number) {
-  const unlocked = new Set(unlockedThemes(await masteredNodes(userId)));
+export async function puzzleAccess(userId: number, ahead = false) {
+  const unlocked = new Set(ahead ? writtenThemes() : unlockedThemes(await masteredNodes(userId)));
   const pool = puzzles().all.filter((p) => isEligible(p.tags, unlocked));
   const counts = new Map<string, number>();
   for (const p of pool) for (const t of teachingThemes(p.tags)!) counts.set(t, (counts.get(t) ?? 0) + 1);
@@ -45,8 +45,8 @@ function pick<T>(xs: T[]): T {
  * The next puzzle: a missed one that is due back, otherwise a fresh one near your
  * rating from a randomly chosen theme (interleaving), or from one theme if asked.
  */
-export async function nextPuzzle(userId: number, theme?: string): Promise<{ puzzle: Puzzle; returning: boolean } | null> {
-  const { pool } = await puzzleAccess(userId);
+export async function nextPuzzle(userId: number, theme?: string, ahead = false): Promise<{ puzzle: Puzzle; returning: boolean } | null> {
+  const { pool } = await puzzleAccess(userId, ahead);
   if (!pool.length) return null;
   const byTheme = theme ? pool.filter((p) => p.tags.includes(theme)) : pool;
   if (!byTheme.length) return null;

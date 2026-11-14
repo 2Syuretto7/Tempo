@@ -4,7 +4,7 @@
  * per day, taught through the Feynman loop. See the Tempo plan, "Home page and the one
  * Learn button" and "The learning engine".
  */
-import { NODES, getNode, unlocks } from "@/curriculum";
+import { NODES, getNode, topoOrder, unlocks } from "@/curriculum";
 import type { LearningNode } from "@/curriculum/types";
 
 export type Phase = "review" | "recall" | "guided" | "independent" | "consolidate" | "repair" | "try";
@@ -30,6 +30,8 @@ export type LearnerState = {
   dueCards: DueCard[];
   /** Whether the Puzzles room is open, and how many puzzles were finished today. */
   puzzles?: { open: boolean; doneToday: number };
+  /** The learner chose to keep going: no daily caps, and lessons may run ahead of mastery. */
+  more?: boolean;
   seed?: () => number;
 };
 
@@ -203,8 +205,61 @@ export function plan(state: LearnerState): Plan {
     if (next) blocks.push(newNodeBlock(next, mastered, seed));
   }
 
-  const headline = describe(blocks, nodes, now);
+  if (state.more) addMore(blocks, state, mastered, seed);
+
+  const headline = state.more ? describeMore(blocks) : describe(blocks, nodes, now);
   return { blocks, headline, done: blocks.length === 0 };
+}
+
+/**
+ * The next idea when the learner wants to run ahead: a node not yet started, preferring
+ * one whose prerequisites are at least begun, then the earliest stage and graph order.
+ */
+export function chooseAhead(nodes: NodeState[]): LearningNode | null {
+  const started = new Set(nodes.map((n) => n.nodeId));
+  const order = topoOrder();
+  const fresh = NODES.filter((n) => !started.has(n.id));
+  fresh.sort(
+    (a, b) =>
+      Number(!a.prereqs.every((p) => started.has(p))) - Number(!b.prereqs.every((p) => started.has(p))) ||
+      a.stage - b.stage ||
+      order.indexOf(a.id) - order.indexOf(b.id),
+  );
+  return fresh[0] ?? null;
+}
+
+/** "Keep going": nothing is capped. Another new idea, more puzzles, and more practice. */
+function addMore(blocks: Block[], state: LearnerState, mastered: Set<string>, seed: () => number) {
+  if (!blocks.some((b) => b.kind === "new")) {
+    const next = chooseNext(state.nodes) ?? chooseAhead(state.nodes);
+    if (next) blocks.push(newNodeBlock(next, mastered, seed));
+  }
+  if (state.puzzles?.open && !blocks.some((b) => b.kind === "puzzles")) {
+    blocks.push({
+      title: "Puzzles",
+      kind: "puzzles",
+      activities: Array.from({ length: RULES.puzzlesPerDay }, (_, index) => ({ type: "puzzle", nodeId: "chess.checkmate", index })),
+    });
+  }
+  if (!blocks.length) {
+    // Everything is started: more mixed practice on what is still being learnt, then on what is mastered.
+    const learning = state.nodes.filter((n) => !n.masteredAt).map((n) => getNode(n.nodeId));
+    const pool = learning.length ? learning : [...mastered].map(getNode);
+    const acts: Activity[] = [];
+    for (let i = 0; i < 8 && pool.length; i++) acts.push(exercise(pool[i % pool.length], i + 3, "independent", seed));
+    if (acts.length) blocks.push({ title: "More practice", kind: "consolidate", activities: acts });
+  }
+}
+
+function describeMore(blocks: Block[]): string {
+  const parts: string[] = [];
+  for (const b of blocks) {
+    const part =
+      b.kind === "new" ? `a new idea, ${getNode(b.nodeId!).title.toLowerCase()}` : b.kind === "puzzles" ? `${b.activities.length} puzzles` : b.kind === "review" ? "reviews" : "more practice";
+    if (!parts.includes(part)) parts.push(part);
+  }
+  if (!parts.length) return "There is nothing more to add right now.";
+  return `Extra: ${parts.length > 1 ? `${parts.slice(0, -1).join(", ")}, then ${parts.at(-1)}` : parts[0]}.`;
 }
 
 export function newNodeBlock(node: LearningNode, mastered: Set<string>, seed: () => number = makeSeed): Block {

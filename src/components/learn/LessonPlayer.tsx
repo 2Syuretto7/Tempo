@@ -46,6 +46,7 @@ export function LessonPlayer() {
   const [puzzleAt, setPuzzleAt] = useState<{ id: string; ply: number } | null>(null);
   const skipped = useRef(new Set<string>());
   const started = useRef(new Set<string>());
+  const more = useRef(false);
   const outcome = useRef<{ correct: boolean; firstTry: boolean } | null>(null);
 
   const router = useRouter();
@@ -61,7 +62,7 @@ export function LessonPlayer() {
 
   const fetchPlan = useCallback(async (): Promise<Plan | null> => {
     try {
-      const res = await fetch("/api/plan", { cache: "no-store" });
+      const res = await fetch(more.current ? "/api/plan?more=1" : "/api/plan", { cache: "no-store" });
       if (res.status === 401) {
         router.push("/sign-in");
         return null;
@@ -102,6 +103,8 @@ export function LessonPlayer() {
     setCompleted((c) => c + 1);
     if (queue && index + 1 < queue.length) setIndex(index + 1);
     else {
+      // An extra session ends at its own natural stop; the next one is the learner's choice.
+      more.current = false;
       setQueue(null);
       await load();
     }
@@ -140,9 +143,24 @@ export function LessonPlayer() {
         <div className="text-[12px] uppercase tracking-[0.08em] font-medium text-meta">{completed || headline.startsWith("Done") ? "Session complete" : "Nothing due"}</div>
         <h1 className="mt-4 text-[40px] leading-[43px] tracking-[-1.2px]">{completed || headline.startsWith("Done") ? "That is today\u2019s work." : "You are up to date."}</h1>
         <p className="mt-4 text-[18px] leading-[28.8px] text-body max-w-[520px]">{headline}</p>
-        <Link href="/" className="mt-8 inline-flex h-10 px-5 items-center bg-white text-[#0d0d0d] rounded-[2px] font-medium">
-          Back to home
-        </Link>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <Button
+            onClick={() => {
+              more.current = true;
+              setQueue(null);
+              void load();
+            }}
+            chevron
+          >
+            Keep going
+          </Button>
+          <Link href="/" className="inline-flex h-10 px-5 items-center border border-white text-ink rounded-[2px] font-medium hover:bg-overlay">
+            Back to home
+          </Link>
+        </div>
+        <p className="mt-6 text-[14px] leading-[22px] text-meta max-w-[440px]">
+          Stopping here is the slow, steady path, and sleep helps it stick. If you want more, Keep going adds another new idea, more puzzles or more practice, as much as you like.
+        </p>
       </Centered>
     );
 

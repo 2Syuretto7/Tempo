@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isMastered, plan, chooseNext, type Attempt, type NodeState } from "@/lib/learn/planner";
+import { isMastered, plan, chooseNext, type Attempt, type NodeState, type Phase } from "@/lib/learn/planner";
 
 const day = (n: number, h = 10) => new Date(Date.UTC(2026, 10, 14 + n, h - 5, 30)); // h o'clock IST
 let s = 1;
@@ -63,5 +63,28 @@ describe("planner", () => {
     const failed: Attempt = { nodeId: "chess.board", itemId: "chess.board.find", correct: false, hints: 0, phase: "review", at: day(5, 9) };
     const p = plan({ now: day(5, 10), nodes, attempts: [failed], dueCards: [], seed });
     expect(p.blocks[0].kind).toBe("repair");
+  });
+});
+
+describe("keep going", () => {
+  const now = new Date("2026-11-20T18:00:00+05:30");
+  const today = new Date("2026-11-20T09:00:00+05:30");
+
+  it("offers another new idea even after one was started today", () => {
+    const nodes: NodeState[] = [{ nodeId: "chess.board", startedAt: today, theoryDone: true, masteredAt: null }];
+    const attempts = Array.from({ length: 9 }, (_, i) => ({ nodeId: "chess.board", itemId: "chess.board.find", correct: true, hints: 0, phase: (i < 5 ? "guided" : "independent") as Phase, at: today }));
+    const normal = plan({ now, nodes, attempts, dueCards: [], seed: () => 1 });
+    expect(normal.blocks.some((b) => b.kind === "new")).toBe(false);
+    const more = plan({ now, nodes, attempts, dueCards: [], more: true, seed: () => 1 });
+    const fresh = more.blocks.find((b) => b.kind === "new");
+    expect(fresh?.nodeId).toBeTruthy();
+    expect(fresh?.nodeId).not.toBe("chess.board");
+    expect(more.headline).toMatch(/^Extra:/);
+  });
+
+  it("adds puzzles beyond the daily quota", () => {
+    const nodes: NodeState[] = [{ nodeId: "chess.board", startedAt: today, theoryDone: true, masteredAt: today }];
+    const more = plan({ now, nodes, attempts: [], dueCards: [], puzzles: { open: true, doneToday: 40 }, more: true, seed: () => 1 });
+    expect(more.blocks.find((b) => b.kind === "puzzles")?.activities.length).toBe(5);
   });
 });

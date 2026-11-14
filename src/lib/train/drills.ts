@@ -7,7 +7,7 @@ export type DrillInfo = {
   id: DrillId;
   title: string;
   summary: string;
-  /** The graph node the drill belongs to; it opens once you have started that node. */
+  /** The graph node the drill belongs to; recommended once that node is started, never locked. */
   nodeId: string;
   /** How results are shown: a timed count, or found out of total. */
   unit: "timed" | "ratio";

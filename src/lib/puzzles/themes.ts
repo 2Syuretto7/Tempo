@@ -152,6 +152,11 @@ export function unlockedThemes(mastered: Set<string>): string[] {
   return Object.keys(THEME_NODE).filter((t) => NODE_BY_ID.has(THEME_NODE[t]) && mastered.has(THEME_NODE[t]));
 }
 
+/** Every theme whose node is written, mastered or not: for when the learner chooses to run ahead. */
+export function writtenThemes(): string[] {
+  return Object.keys(THEME_NODE).filter((t) => NODE_BY_ID.has(THEME_NODE[t]));
+}
+
 export function isEligible(tags: string[], unlocked: Set<string>): boolean {
   const themes = teachingThemes(tags);
   return !!themes && themes.every((t) => unlocked.has(t));

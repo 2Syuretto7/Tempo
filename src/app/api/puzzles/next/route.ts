@@ -4,11 +4,16 @@ import { getRating, nextPuzzle, puzzleAccess } from "@/lib/puzzles/store";
 import { teachingThemes, THEME_NAMES } from "@/lib/puzzles/themes";
 
 export async function GET(req: Request) {
-  const theme = new URL(req.url).searchParams.get("theme") || undefined;
+  const params = new URL(req.url).searchParams;
+  const theme = params.get("theme") || undefined;
+  const ahead = params.get("ahead") === "1";
   return withUser(async (userId) => {
-    const [access, rating, next] = await Promise.all([puzzleAccess(userId), getRating(userId), nextPuzzle(userId, theme)]);
+    const [access, mine, rating, next] = await Promise.all([puzzleAccess(userId, ahead), ahead ? puzzleAccess(userId) : null, getRating(userId), nextPuzzle(userId, theme, ahead)]);
     return {
       open: access.open,
+      ahead,
+      // Whether the learner has mastered any puzzle theme yet; going ahead is always allowed.
+      mastered: (mine ?? access).open,
       themes: access.themes,
       rating: Math.round(rating.rating),
       provisional: rating.rd > 110,
