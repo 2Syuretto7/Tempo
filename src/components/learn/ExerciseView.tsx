@@ -6,6 +6,7 @@ import { load, tryMove } from "@/lib/chess";
 import { Board, type Mark } from "@/components/board/Board";
 import { Button } from "@/components/ui/Button";
 import { Rich } from "./Rich";
+import { Stage } from "./Stage";
 
 export type Outcome = { correct: boolean; firstTry: boolean };
 
@@ -112,9 +113,10 @@ export function ExerciseView({ exercise, retries, onHint, onResolved, continueLa
   }, [exercise]);
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px] items-start">
-      {exercise.fen ? (
-        <div className="w-full max-w-[min(100%,calc(100svh-230px))] mx-auto lg:mx-0">
+    <Stage
+      focusKey={result ? `${result.correct}:${misses}:${finished}` : undefined}
+      board={
+        exercise.fen ? (
           <Board
             fen={fen}
             orientation={exercise.orientation}
@@ -129,96 +131,99 @@ export function ExerciseView({ exercise, retries, onHint, onResolved, continueLa
             marks={marks}
             label={exercise.prompt}
           />
-        </div>
-      ) : (
-        <div className="hidden lg:block" />
-      )}
-      <div className="lg:pt-2">
-        {sideNote && <div className="mb-3 font-mono text-[11px] uppercase tracking-[0.04em] text-meta">{sideNote}</div>}
-        <h2 className="text-[24px] leading-[30px] tracking-[-0.48px]">
-          <Rich text={exercise.prompt} />
-        </h2>
-
-        {exercise.kind === "choice" && (
-          <div className="mt-6 grid gap-px bg-hairline border border-hairline rounded-[2px] overflow-hidden" role="radiogroup">
-            {exercise.options.map((o, i) => {
-              const state = result && picked === i ? (i === exercise.answer ? "good" : "bad") : finished && i === exercise.answer ? "good" : null;
-              return (
-                <button
-                  key={o}
-                  role="radio"
-                  aria-checked={picked === i}
-                  disabled={!!result}
-                  onClick={() => choose(i)}
-                  className={`text-left px-4 min-h-12 py-3 bg-raised text-[16px] flex items-center justify-between gap-3 transition-colors ${
-                    state === "good" ? "bg-[rgba(69,201,143,0.12)] text-ink" : state === "bad" ? "bg-[rgba(242,85,90,0.12)] text-ink" : "hover:bg-[#1b1b1b] text-body"
-                  }`}
-                >
-                  <span>{o}</span>
-                  {state === "good" && <Glyph kind="check" />}
-                  {state === "bad" && <Glyph kind="cross" />}
-                </button>
-              );
-            })}
-          </div>
-        )}
-
-        {multi && !result && (
-          <div className="mt-6 flex items-center gap-3">
-            <Button onClick={() => checkSquares(selected)} disabled={!selected.length}>
-              Check
-            </Button>
-            <Button variant="ghost" onClick={() => setSelected([])} disabled={!selected.length}>
-              Clear
-            </Button>
-            <span className="ml-auto font-mono text-[12px] text-meta">{selected.length} selected</span>
-          </div>
-        )}
-
-        {result && (
-          <div className="mt-6 fade-in" aria-live="polite">
-            <Pill good={result.correct} />
-            <p className="mt-3 text-[16px] leading-6 text-body">{result.message}</p>
-            {finished && exercise.explain && (
-              <p className="mt-2 text-[16px] leading-6 text-body">
-                <Rich text={exercise.explain} />
-              </p>
-            )}
-            <div className="mt-6 flex gap-3">
-              {finished ? (
-                <Button onClick={onContinue} chevron autoFocus>
-                  {continueLabel}
-                </Button>
-              ) : (
-                <>
-                  <Button onClick={reset} autoFocus>
-                    Try again
-                  </Button>
-                  {misses >= 3 && (
-                    <Button
-                      variant="ghost"
-                      onClick={() => {
-                        setFinished(true);
-                        onResolved({ correct: false, firstTry: false });
-                      }}
+        ) : undefined
+      }
+      top={
+        <>
+          {sideNote && <div className="mb-2 font-mono text-[11px] uppercase tracking-[0.04em] text-meta">{sideNote}</div>}
+          <h2 className="text-[20px] leading-[26px] md:text-[24px] md:leading-[30px] tracking-[-0.48px]">
+            <Rich text={exercise.prompt} />
+          </h2>
+        </>
+      }
+      bottom={
+        <div>
+            {exercise.kind === "choice" && (
+              <div className="mt-6 grid gap-px bg-hairline border border-hairline rounded-[2px] overflow-hidden" role="radiogroup">
+                {exercise.options.map((o, i) => {
+                  const state = result && picked === i ? (i === exercise.answer ? "good" : "bad") : finished && i === exercise.answer ? "good" : null;
+                  return (
+                    <button
+                      key={o}
+                      role="radio"
+                      aria-checked={picked === i}
+                      disabled={!!result}
+                      onClick={() => choose(i)}
+                      className={`text-left px-4 min-h-12 py-3 bg-raised text-[16px] flex items-center justify-between gap-3 transition-colors ${
+                        state === "good" ? "bg-[rgba(69,201,143,0.12)] text-ink" : state === "bad" ? "bg-[rgba(242,85,90,0.12)] text-ink" : "hover:bg-[#1b1b1b] text-body"
+                      }`}
                     >
-                      Move on for now
-                    </Button>
-                  )}
-                </>
-              )}
-            </div>
-          </div>
-        )}
+                      <span>{o}</span>
+                      {state === "good" && <Glyph kind="check" />}
+                      {state === "bad" && <Glyph kind="cross" />}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
 
-        {!finished && onHint && (
-          <button onClick={onHint} className="mt-8 inline-flex items-center gap-2 text-[14px] text-link hover:text-ink">
-            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="7" r="4.5" fill="none" stroke="currentColor" strokeWidth="1.25" /><path d="M6.5 13.5h3" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" /></svg>
-            Ask Kibitzer for a hint
-          </button>
-        )}
-      </div>
-    </div>
+            {multi && !result && (
+              <div className="mt-6 flex items-center gap-3">
+                <Button onClick={() => checkSquares(selected)} disabled={!selected.length}>
+                  Check
+                </Button>
+                <Button variant="ghost" onClick={() => setSelected([])} disabled={!selected.length}>
+                  Clear
+                </Button>
+                <span className="ml-auto font-mono text-[12px] text-meta">{selected.length} selected</span>
+              </div>
+            )}
+
+            {result && (
+              <div className="mt-6 fade-in" aria-live="polite">
+                <Pill good={result.correct} />
+                <p className="mt-3 text-[16px] leading-6 text-body">{result.message}</p>
+                {finished && exercise.explain && (
+                  <p className="mt-2 text-[16px] leading-6 text-body">
+                    <Rich text={exercise.explain} />
+                  </p>
+                )}
+                <div className="mt-6 flex gap-3">
+                  {finished ? (
+                    <Button onClick={onContinue} chevron autoFocus>
+                      {continueLabel}
+                    </Button>
+                  ) : (
+                    <>
+                      <Button onClick={reset} autoFocus>
+                        Try again
+                      </Button>
+                      {misses >= 3 && (
+                        <Button
+                          variant="ghost"
+                          onClick={() => {
+                            setFinished(true);
+                            onResolved({ correct: false, firstTry: false });
+                          }}
+                        >
+                          Move on for now
+                        </Button>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {!finished && onHint && (
+              <button onClick={onHint} className="mt-8 inline-flex items-center gap-2 text-[14px] text-link hover:text-ink">
+                <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="7" r="4.5" fill="none" stroke="currentColor" strokeWidth="1.25" /><path d="M6.5 13.5h3" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" /></svg>
+                Ask Kibitzer for a hint
+              </button>
+            )}
+        </div>
+      }
+    />
   );
 }
 

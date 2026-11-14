@@ -5,6 +5,7 @@ import { load } from "@/lib/chess";
 import { Board } from "@/components/board/Board";
 import { Button } from "@/components/ui/Button";
 import { Pill } from "@/components/learn/ExerciseView";
+import { Stage } from "@/components/learn/Stage";
 
 export type ClientPuzzle = {
   id: string;
@@ -137,72 +138,78 @@ export function PuzzleView({ puzzle, hints, onHint, onPly, onRecorded, continueL
   const turn = puzzle.colour === "white" ? "White" : "Black";
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px] items-start" data-puzzle={puzzle.id}>
-      <div className="w-full max-w-[min(100%,calc(100svh-230px))] mx-auto lg:mx-0">
-        <Board fen={fen} orientation={puzzle.colour} lastMove={lastMove} mode={state === "yours" && !replying ? "move" : "view"} onMove={onMove} label={`Puzzle. You play ${turn}.`} />
-      </div>
-      <div className="lg:pt-2">
-        <div className="mb-3 font-mono text-[11px] uppercase tracking-[0.04em] text-meta">
-          {puzzle.returning ? "Back for another try" : `Puzzle ${puzzle.rating}`}
+    <div data-puzzle={puzzle.id}>
+      <Stage
+        focusKey={state === "wrong" || finished ? `${state}:${saved ? 1 : 0}` : undefined}
+        board={<Board fen={fen} orientation={puzzle.colour} lastMove={lastMove} mode={state === "yours" && !replying ? "move" : "view"} onMove={onMove} label={`Puzzle. You play ${turn}.`} />}
+        top={
+          <>
+            <div className="mb-2 font-mono text-[11px] uppercase tracking-[0.04em] text-meta">
+              {puzzle.returning ? "Back for another try" : `Puzzle ${puzzle.rating}`}
+            </div>
+            <h2 className="text-[20px] leading-[26px] md:text-[24px] md:leading-[30px] tracking-[-0.48px]">
+              {state === "setting" ? "Watch your opponent's move." : `Your move. You play ${turn}.`}
+            </h2>
+            <p className="mt-3 hidden md:block text-[16px] leading-6 text-body">
+              {state === "setting"
+                ? "Then find the best reply."
+                : "Find the strongest move, and keep going until the line is finished. Before you move: checks, captures, threats."}
+            </p>
+          </>
+        }
+        bottom={
+          <div>
+      {state === "wrong" && (
+        <div className="mt-6 fade-in" aria-live="polite">
+          <Pill good={false} />
+          <p className="mt-3 text-[16px] leading-6 text-body">That is not the move. Look again at what your opponent has left undefended, and what every check does.</p>
+          <div className="mt-6 flex gap-3">
+            <Button onClick={retry} autoFocus>
+              Try again
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                setState("gaveup");
+              }}
+            >
+              Move on for now
+            </Button>
+          </div>
         </div>
-        <h2 className="text-[24px] leading-[30px] tracking-[-0.48px]">
-          {state === "setting" ? "Watch your opponent's move." : `Your move. You play ${turn}.`}
-        </h2>
-        <p className="mt-3 text-[16px] leading-6 text-body">
-          {state === "setting"
-            ? "Then find the best reply."
-            : "Find the strongest move, and keep going until the line is finished. Before you move: checks, captures, threats."}
-        </p>
+      )}
 
-        {state === "wrong" && (
-          <div className="mt-6 fade-in" aria-live="polite">
-            <Pill good={false} />
-            <p className="mt-3 text-[16px] leading-6 text-body">That is not the move. Look again at what your opponent has left undefended, and what every check does.</p>
-            <div className="mt-6 flex gap-3">
-              <Button onClick={retry} autoFocus>
-                Try again
-              </Button>
-              <Button
-                variant="ghost"
-                onClick={() => {
-                  setState("gaveup");
-                }}
-              >
-                Move on for now
-              </Button>
-            </div>
+      {finished && (
+        <div className="mt-6 fade-in" aria-live="polite">
+          {state === "solved" ? <Pill good text="Solved" /> : <Pill good={false} text="It will come back in a few days" />}
+          {saved && (
+            <p className="mt-3 text-[16px] leading-6 text-body">
+              {saved.r.rated
+                ? `Puzzle rating ${saved.r.rating}${saved.r.provisional ? "?" : ""} (${saved.r.delta >= 0 ? "+" : ""}${saved.r.delta}).`
+                : saved.correct
+                  ? "Solved with help or on a later try, so your rating stays as it is."
+                  : `Puzzle rating ${saved.r.rating}${saved.r.provisional ? "?" : ""}.`}
+            </p>
+          )}
+          {state === "solved" && puzzle.themes.length > 0 && (
+            <p className="mt-2 text-[16px] leading-6 text-body">The idea: {puzzle.themes.join(", ").toLowerCase()}.</p>
+          )}
+          <div className="mt-6">
+            <Button onClick={onContinue} chevron autoFocus>
+              {continueLabel}
+            </Button>
           </div>
-        )}
+        </div>
+      )}
 
-        {finished && (
-          <div className="mt-6 fade-in" aria-live="polite">
-            {state === "solved" ? <Pill good text="Solved" /> : <Pill good={false} text="It will come back in a few days" />}
-            {saved && (
-              <p className="mt-3 text-[16px] leading-6 text-body">
-                {saved.r.rated
-                  ? `Puzzle rating ${saved.r.rating}${saved.r.provisional ? "?" : ""} (${saved.r.delta >= 0 ? "+" : ""}${saved.r.delta}).`
-                  : saved.correct
-                    ? "Solved with help or on a later try, so your rating stays as it is."
-                    : `Puzzle rating ${saved.r.rating}${saved.r.provisional ? "?" : ""}.`}
-              </p>
-            )}
-            {state === "solved" && puzzle.themes.length > 0 && (
-              <p className="mt-2 text-[16px] leading-6 text-body">The idea: {puzzle.themes.join(", ").toLowerCase()}.</p>
-            )}
-            <div className="mt-6">
-              <Button onClick={onContinue} chevron autoFocus>
-                {continueLabel}
-              </Button>
-            </div>
+      {!finished && state !== "setting" && (
+        <button onClick={onHint} className="mt-6 md:mt-8 inline-flex items-center gap-2 text-[14px] text-link hover:text-ink">
+          Ask Kibitzer for a hint
+        </button>
+      )}
           </div>
-        )}
-
-        {!finished && state !== "setting" && (
-          <button onClick={onHint} className="mt-8 inline-flex items-center gap-2 text-[14px] text-link hover:text-ink">
-            Ask Kibitzer for a hint
-          </button>
-        )}
-      </div>
+        }
+      />
     </div>
   );
 }

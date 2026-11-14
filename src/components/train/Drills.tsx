@@ -5,6 +5,7 @@ import { ALL_SQUARES, tryMove } from "@/lib/chess";
 import { checksTask, DRILL_SECONDS, isKnightHop, knightTask, squareOptions } from "@/lib/train/drills";
 import { Board, type Mark } from "@/components/board/Board";
 import { Button } from "@/components/ui/Button";
+import { Stage } from "@/components/learn/Stage";
 
 export type DrillDone = (score: number, total: number) => void;
 
@@ -17,13 +18,8 @@ const randomSq = (not?: string) => {
   }
 };
 
-function Layout({ board, children }: { board: React.ReactNode; children: React.ReactNode }) {
-  return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px] items-start">
-      <div className="w-full max-w-[min(100%,calc(100svh-230px))] mx-auto lg:mx-0">{board}</div>
-      <div className="lg:pt-2">{children}</div>
-    </div>
-  );
+function Layout({ board, children, bottom }: { board: React.ReactNode; children: React.ReactNode; bottom?: React.ReactNode }) {
+  return <Stage board={board} top={children} bottom={bottom} />;
 }
 
 /** Thirty seconds on the clock once started; calls onEnd when it runs out. */
@@ -98,10 +94,16 @@ export function FindSquare({ onDone }: { onDone: DrillDone }) {
     <Layout board={<Board fen={EMPTY} hideCoords orientation={side} mode={running ? "select" : "view"} onSelect={pick} marks={marks} label="Empty board without coordinates" />}>
       {running ? (
         <>
-          <Score left={left} score={score} />
-          <div className="mt-8 text-[12px] uppercase tracking-[0.08em] font-medium text-meta">Click</div>
-          <div className="mt-2 font-mono text-[72px] leading-[72px] text-ink" aria-live="polite">
-            {target}
+          <div className="flex items-end justify-between gap-6 md:block">
+            <div className="md:mb-8">
+              <Score left={left} score={score} />
+            </div>
+            <div>
+              <div className="text-[12px] uppercase tracking-[0.08em] font-medium text-meta">Click</div>
+              <div className="mt-1 md:mt-2 font-mono text-[48px] leading-[48px] md:text-[72px] md:leading-[72px] text-ink" aria-live="polite">
+                {target}
+              </div>
+            </div>
           </div>
         </>
       ) : (
@@ -147,18 +149,26 @@ export function NameSquare({ onDone }: { onDone: DrillDone }) {
   };
 
   return (
-    <Layout board={<Board fen={EMPTY} hideCoords orientation={side} highlight={running ? [target] : []} label="Empty board with one square lit" />}>
+    <Layout
+      board={<Board fen={EMPTY} hideCoords orientation={side} highlight={running ? [target] : []} label="Empty board with one square lit" />}
+      bottom={
+        running && (
+          <div className="mt-5 md:mt-8">
+            <div className="text-[12px] uppercase tracking-[0.08em] font-medium text-meta">Which square is lit?</div>
+            <div className="mt-3 grid grid-cols-2 gap-px bg-hairline border border-hairline rounded-[2px] overflow-hidden">
+              {options.map((o) => (
+                <button key={o} onClick={() => answer(o)} className={`h-14 font-mono text-[20px] ${wrong === o ? "bg-[rgba(242,85,90,0.12)] text-ink" : "bg-raised text-ink hover:bg-[#1b1b1b]"}`}>
+                  {o}
+                </button>
+              ))}
+            </div>
+          </div>
+        )
+      }
+    >
       {running ? (
         <>
           <Score left={left} score={score} />
-          <div className="mt-8 text-[12px] uppercase tracking-[0.08em] font-medium text-meta">Which square is lit?</div>
-          <div className="mt-3 grid grid-cols-2 gap-px bg-hairline border border-hairline rounded-[2px] overflow-hidden">
-            {options.map((o) => (
-              <button key={o} onClick={() => answer(o)} className={`h-14 font-mono text-[20px] ${wrong === o ? "bg-[rgba(242,85,90,0.12)] text-ink" : "bg-raised text-ink hover:bg-[#1b1b1b]"}`}>
-                {o}
-              </button>
-            ))}
-          </div>
         </>
       ) : (
         <>
@@ -241,13 +251,8 @@ export function KnightRoute({ onDone }: { onDone: DrillDone }) {
           label={`Knight on ${at}; target ${task.to}`}
         />
       }
-    >
-      <div className="font-mono text-[12px] text-meta">
-        Route {round + 1} of {ROUTES}
-      </div>
-      <h2 className="mt-3 text-[24px] leading-[30px] tracking-[-0.48px]">
-        Take the knight from {task.from} to {task.to} in as few moves as you can.
-      </h2>
+      bottom={
+        <div className="mt-5 md:mt-0">
       <p className="mt-3 text-[16px] leading-6 text-body">Click each square the knight lands on. Moves so far: {path.length}.</p>
       {result && (
         <div className="mt-6 fade-in" aria-live="polite">
@@ -266,6 +271,15 @@ export function KnightRoute({ onDone }: { onDone: DrillDone }) {
           Start this route again
         </Button>
       )}
+        </div>
+      }
+    >
+      <div className="font-mono text-[12px] text-meta">
+        Route {round + 1} of {ROUTES}
+      </div>
+      <h2 className="mt-2 text-[20px] leading-[26px] md:text-[24px] md:leading-[30px] tracking-[-0.48px]">
+        Take the knight from {task.from} to {task.to} in as few moves as you can.
+      </h2>
     </Layout>
   );
 }
@@ -310,12 +324,10 @@ export function FindChecks({ onDone }: { onDone: DrillDone }) {
   const missed = task.checks.filter((c) => !found.includes(c));
 
   return (
-    <Layout board={<Board fen={task.fen} mode={shown ? "view" : "move"} onMove={play} label="Find every check for White" />}>
-      <div className="font-mono text-[12px] text-meta">
-        Position {round + 1} of {POSITIONS} · White to move
-      </div>
-      <h2 className="mt-3 text-[24px] leading-[30px] tracking-[-0.48px]">Play every move that gives check.</h2>
-      <p className="mt-3 text-[16px] leading-6 text-body">Each move you try is taken back so you can look for the next. Press Done when you think you have them all.</p>
+    <Layout
+      board={<Board fen={task.fen} mode={shown ? "view" : "move"} onMove={play} label="Find every check for White" />}
+      bottom={
+        <div className="mt-1 md:mt-0">
       <div className="mt-6 flex flex-wrap gap-2 min-h-8" aria-live="polite">
         {found.map((c) => (
           <span key={c} className="h-8 px-3 inline-flex items-center font-mono text-[14px] text-ink border border-hairline rounded-[2px]">
@@ -340,6 +352,14 @@ export function FindChecks({ onDone }: { onDone: DrillDone }) {
           <Button onClick={finish}>Done</Button>
         </div>
       )}
+        </div>
+      }
+    >
+      <div className="font-mono text-[12px] text-meta">
+        Position {round + 1} of {POSITIONS} · White to move
+      </div>
+      <h2 className="mt-2 text-[20px] leading-[26px] md:text-[24px] md:leading-[30px] tracking-[-0.48px]">Play every move that gives check.</h2>
+      <p className="mt-3 hidden md:block text-[16px] leading-6 text-body">Each move you try is taken back so you can look for the next. Press Done when you think you have them all.</p>
     </Layout>
   );
 }

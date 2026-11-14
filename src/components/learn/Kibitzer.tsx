@@ -14,6 +14,9 @@ type Props = {
   onUse: () => void;
 };
 
+/** Padding for the page while Kibitzer is open: room for the bottom sheet on tablets, the side panel on laptops. */
+export const KIBITZER_ROOM = "md:pb-[40vh] md:[--kib:40svh] lg:pb-0 lg:pr-[360px] lg:[--kib:0px]";
+
 /** Mount with key={contextKey} so each screen starts a fresh conversation. */
 export function Kibitzer({ target, open, setOpen, hintSignal, onUse }: Props) {
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -74,7 +77,7 @@ export function Kibitzer({ target, open, setOpen, hintSignal, onUse }: Props) {
 
   return (
     <aside
-      className="fixed z-40 inset-x-0 bottom-0 md:inset-x-auto md:bottom-6 md:right-6 md:w-[380px] h-[min(560px,75vh)] bg-raised border border-hairline md:rounded-[4px] flex flex-col fade-in"
+      className="fixed z-40 inset-x-0 bottom-0 h-[min(560px,65vh)] md:h-[40vh] lg:inset-x-auto lg:right-0 lg:top-[60px] lg:h-auto lg:w-[360px] bg-raised border-t lg:border-t-0 lg:border-l border-hairline flex flex-col fade-in"
       aria-label="Kibitzer"
     >
       <header className="h-12 px-4 flex items-center gap-2 border-b border-hairline">

@@ -7,7 +7,7 @@ import { getItem, getNode } from "@/curriculum";
 import type { Activity, Block, Plan } from "@/lib/learn/planner";
 import { Button } from "@/components/ui/Button";
 import { ExerciseView } from "./ExerciseView";
-import { Kibitzer, type KibitzerTarget } from "./Kibitzer";
+import { Kibitzer, KIBITZER_ROOM, type KibitzerTarget } from "./Kibitzer";
 import { TheoryView } from "./TheoryView";
 import { PuzzleView, type ClientPuzzle } from "@/components/puzzles/PuzzleView";
 
@@ -151,7 +151,7 @@ export function LessonPlayer() {
   const total = queue.length;
 
   return (
-    <div className="flex-1 flex flex-col">
+    <div className={`flex-1 flex flex-col ${kOpen ? KIBITZER_ROOM : ""}`}>
       <div className="px-4 md:px-8 pt-4">
         <div className="flex items-center gap-3 text-[12px] uppercase tracking-[0.08em] font-medium text-meta">
           <span className="text-ink normal-case tracking-normal text-[14px]">{block.title}</span>
@@ -174,7 +174,7 @@ export function LessonPlayer() {
         </div>
       </div>
 
-      <main className="flex-1 px-4 md:px-8 pt-8 pb-28 md:py-10 max-w-[1240px] w-full mx-auto">
+      <main className="flex-1 px-4 md:px-8 pt-5 pb-28 md:py-8 lg:py-10 max-w-[1240px] w-full mx-auto">
         {activity.type === "theory" && (
           <TheoryView
             key={contextKey.split(":").slice(0, 3).join(":")}

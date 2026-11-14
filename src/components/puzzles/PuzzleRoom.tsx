@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { Kibitzer } from "@/components/learn/Kibitzer";
+import { Kibitzer, KIBITZER_ROOM } from "@/components/learn/Kibitzer";
 import { PuzzleView, type ClientPuzzle } from "./PuzzleView";
 
 type Theme = { id: string; name: string; count: number };
@@ -75,7 +75,7 @@ export function PuzzleRoom() {
     );
 
   return (
-    <div className="flex-1 flex flex-col">
+    <div className={`flex-1 flex flex-col ${kOpen ? KIBITZER_ROOM : ""}`}>
       <div className="px-4 md:px-8 pt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
         <span className="text-[14px] text-ink">Puzzles</span>
         <span className="font-mono text-[12px] text-meta">
@@ -101,7 +101,7 @@ export function PuzzleRoom() {
           </select>
         </label>
       </div>
-      <main className="flex-1 px-4 md:px-8 pt-8 pb-28 md:py-10 max-w-[1240px] w-full mx-auto">
+      <main className="flex-1 px-4 md:px-8 pt-5 pb-28 md:py-8 lg:py-10 max-w-[1240px] w-full mx-auto">
         {data.puzzle ? (
           <PuzzleView key={`${count}:${data.puzzle.id}`} puzzle={data.puzzle} hints={hints} onHint={() => setHintSignal((s) => s + 1)} onPly={setPly} onContinue={() => next()} />
         ) : (

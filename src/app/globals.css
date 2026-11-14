@@ -120,3 +120,55 @@ h4 {
   border: 0;
 }
 svg:not(:focus-visible) .board-focus { display: none; }
+
+/*
+ * Stage: a board with its prompt and actions. Narrow (phone, tablet portrait, or
+ * beside an open Kibitzer): prompt above the board, actions below it, so the task
+ * and the board are on screen together. Wide: board left, prompt and actions right,
+ * the pair centred. Sized to the container, not the window, so it adapts when
+ * Kibitzer is docked.
+ */
+.stage {
+  container-type: inline-size;
+}
+.stage__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "top" "board" "bottom";
+  align-items: start;
+}
+.stage__top {
+  grid-area: top;
+}
+.stage__board {
+  grid-area: board;
+  width: 100%;
+  max-width: min(100%, max(300px, calc(100svh - 330px - var(--kib, 0px))));
+  margin: 20px auto 0;
+}
+.stage__bottom {
+  grid-area: bottom;
+  min-width: 0;
+}
+@container (min-width: 860px) {
+  .stage__grid {
+    grid-template-columns: minmax(0, min(calc(100cqw - 400px), calc(100svh - 200px))) 360px;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "board top" "board bottom";
+    column-gap: 40px;
+    justify-content: center;
+  }
+  .stage__board {
+    max-width: none;
+    margin: 0;
+  }
+  .stage__top {
+    padding-top: 8px;
+  }
+}
+.stage--plain .stage__grid {
+  grid-template-columns: minmax(0, 720px);
+  grid-template-rows: auto;
+  grid-template-areas: "top" "bottom";
+  justify-content: start;
+}

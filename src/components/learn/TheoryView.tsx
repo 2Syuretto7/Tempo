@@ -6,6 +6,7 @@ import { Board } from "@/components/board/Board";
 import { Button } from "@/components/ui/Button";
 import { ExerciseView } from "./ExerciseView";
 import { Rich } from "./Rich";
+import { Stage } from "./Stage";
 
 type Props = {
   node: LearningNode;
@@ -48,44 +49,48 @@ export function TheoryView({ node, onStep, onHint, onDone }: Props) {
   return (
     <div>
       <StepHeader node={node} i={i} />
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px] items-start">
-        {step.fen && (
-          <div className="w-full max-w-[min(100%,calc(100svh-230px))] mx-auto lg:mx-0">
+      <Stage
+        board={
+          step.fen ? (
             <Board fen={step.fen} highlight={step.highlight} arrows={step.arrows} showMoves={step.showMoves} hideCoords={step.hideCoords} orientation={step.orientation} />
-          </div>
-        )}
-        <div className="lg:pt-2">
-          <p className="text-[18px] leading-[28.8px] tracking-[0.18px] text-body">
+          ) : undefined
+        }
+        top={
+          <p className="text-[17px] leading-[27px] md:text-[18px] md:leading-[28.8px] tracking-[0.18px] text-body">
             <Rich text={step.text} />
           </p>
-          <div className="mt-8 flex items-center gap-3">
-            {step.tryIt && !solved.has(i) ? (
-              <Button onClick={() => setTrying(true)} chevron autoFocus>
-                Try it
-              </Button>
-            ) : (
-              <Button onClick={next} chevron autoFocus>
-                {last ? "Finish the lesson" : "Next"}
-              </Button>
-            )}
-            {i > 0 && (
-              <Button variant="ghost" onClick={() => go(i - 1)}>
-                Back
-              </Button>
-            )}
+        }
+        bottom={
+          <div>
+            <div className="mt-6 md:mt-8 flex items-center gap-3">
+              {step.tryIt && !solved.has(i) ? (
+                <Button onClick={() => setTrying(true)} chevron autoFocus>
+                  Try it
+                </Button>
+              ) : (
+                <Button onClick={next} chevron autoFocus>
+                  {last ? "Finish the lesson" : "Next"}
+                </Button>
+              )}
+              {i > 0 && (
+                <Button variant="ghost" onClick={() => go(i - 1)}>
+                  Back
+                </Button>
+              )}
+            </div>
+            <button onClick={onHint} className="mt-6 md:mt-8 inline-flex items-center gap-2 text-[14px] text-link hover:text-ink">
+              Not clear? Ask Kibitzer →
+            </button>
           </div>
-          <button onClick={onHint} className="mt-8 inline-flex items-center gap-2 text-[14px] text-link hover:text-ink">
-            Not clear? Ask Kibitzer →
-          </button>
-        </div>
-      </div>
+        }
+      />
     </div>
   );
 }
 
 function StepHeader({ node, i, label }: { node: LearningNode; i: number; label?: string }) {
   return (
-    <div className="mb-6 flex items-center gap-4">
+    <div className="mb-4 md:mb-6 flex items-center gap-4">
       <div className="text-[12px] uppercase tracking-[0.08em] font-medium text-meta">{label ?? "Theory"}</div>
       <div className="flex gap-1" aria-label={`Step ${i + 1} of ${node.theory.length}`}>
         {node.theory.map((_, k) => (
