@@ -48,6 +48,8 @@ for r in reader:
     if kept:
         rows[pid] = (pid, fen, moves, rating, " ".join(tags))
 
+import os
+os.makedirs("data", exist_ok=True)
 chosen = sorted({pid for h in best.values() for _, pid in h})
 with open("data/puzzles.csv", "w", newline="") as f:
     w = csv.writer(f)
