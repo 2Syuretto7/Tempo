@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+/* Tempo design tokens, from the Tempo UI and UX brief (sections 3 and 6). */
+:root {
+  --gray-900: #0d0d0d;
+  --gray-800: #141414;
+  --gray-700: #272727;
+  --gray-300: #b3b3b3;
+  --gray-200: #c7c7c7;
+  --overlay: rgba(255, 255, 255, 0.1);
+  --text-1: #ffffff;
+  --purple-200: #b3b1fa;
+  --purple-400: #968dfa;
+  --purple-600: #6c35f5;
+  --green-500: #45c98f;
+  --green-300: #5cffb8;
+  --red-500: #f2555a;
+  --yellow-400: #f5c84c;
+  --global-ease: cubic-bezier(0.9, 0.1, 0.1, 0.9);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-page: var(--gray-900);
+  --color-raised: var(--gray-800);
+  --color-hairline: var(--gray-700);
+  --color-overlay: var(--overlay);
+  --color-ink: var(--text-1);
+  --color-body: var(--gray-200);
+  --color-meta: var(--gray-300);
+  --color-link: var(--purple-200);
+  --color-accent: var(--purple-400);
+  --color-accent-strong: var(--purple-600);
+  --color-success: var(--green-500);
+  --color-danger: var(--red-500);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+html,
+body {
+  background: var(--gray-900);
+  color: var(--gray-200);
+}
+
+body {
+  font-family: var(--font-sans);
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--text-1);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--purple-400);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: rgba(108, 53, 245, 0.45);
+  color: #fff;
+}
+
+/* Burn reveal, used once: the home headline. */
+.burn__char {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(6px);
+  animation: burn-in 0.7s var(--ease-standard) forwards;
+  animation-delay: calc(200ms + var(--i) * 18ms);
+}
+@keyframes burn-in {
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.fade-in {
+  animation: fade-in 150ms ease-out both;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .burn__char,
+  .fade-in {
+    animation: none;
+    opacity: 1;
+    filter: none;
+  }
+  * {
+    transition-duration: 0ms !important;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+svg:not(:focus-visible) .board-focus { display: none; }
