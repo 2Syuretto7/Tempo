@@ -79,12 +79,6 @@ CREATE TABLE IF NOT EXISTS drill_results (
   total INTEGER NOT NULL,
   at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
-CREATE TABLE IF NOT EXISTS reflections (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  text TEXT NOT NULL,
-  at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
 `;
 
 // One connection per process. Next bundles route handlers and pages separately, so a

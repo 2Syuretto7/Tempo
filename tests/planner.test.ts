@@ -18,7 +18,7 @@ describe("planner", () => {
     expect(b.nodeId).toBe("chess.board");
     const types = b.activities.map((a) => a.type);
     expect(types.indexOf("theory")).toBeLessThan(types.indexOf("exercise"));
-    expect(types.at(-1)).toBe("reflect");
+    expect(types.at(-1)).toBe("exercise");
     expect(p.headline).toContain("a new idea, the board");
   });
 

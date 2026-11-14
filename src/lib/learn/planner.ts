@@ -15,7 +15,6 @@ export type DueCard = { itemId: string; nodeId: string; due: Date };
 
 export type Activity =
   | { type: "theory"; nodeId: string }
-  | { type: "reflect"; nodeId: string }
   | { type: "exercise"; nodeId: string; itemId: string; seed: number; phase: Phase }
   /** A real puzzle from the Puzzles room, chosen when it is reached; nodeId is nominal. */
   | { type: "puzzle"; nodeId: string; index: number };
@@ -219,7 +218,6 @@ export function newNodeBlock(node: LearningNode, mastered: Set<string>, seed: ()
     acts.push(exercise(node, i + RULES.guidedPerNode, "independent", seed));
     if (i % 2 === 1 && pool.length) acts.push(exercise(pool[i % pool.length], i, "independent", seed));
   }
-  acts.push({ type: "reflect", nodeId: node.id });
   return { title: `New: ${node.title}`, kind: "new", nodeId: node.id, activities: acts };
 }
 

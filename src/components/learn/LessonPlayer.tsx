@@ -8,7 +8,6 @@ import type { Activity, Block, Plan } from "@/lib/learn/planner";
 import { Button } from "@/components/ui/Button";
 import { ExerciseView } from "./ExerciseView";
 import { Kibitzer, type KibitzerTarget } from "./Kibitzer";
-import { ReflectView } from "./ReflectView";
 import { TheoryView } from "./TheoryView";
 import { PuzzleView, type ClientPuzzle } from "@/components/puzzles/PuzzleView";
 
@@ -118,8 +117,7 @@ export function LessonPlayer() {
     const a = entry.activity;
     if (a.type === "puzzle") return puzzleAt ? { nodeId: "", puzzleId: puzzleAt.id, ply: puzzleAt.ply } : null;
     if (a.type === "exercise") return { nodeId: a.nodeId, itemId: a.itemId, seed: a.seed };
-    if (a.type === "theory") return { nodeId: a.nodeId, step: theoryStep };
-    return { nodeId: a.nodeId };
+    return { nodeId: a.nodeId, step: theoryStep };
   }, [entry, theoryStep, puzzleAt]);
 
   const askHint = () => setHintSignal((s) => s + 1);
@@ -158,7 +156,7 @@ export function LessonPlayer() {
         <div className="flex items-center gap-3 text-[12px] uppercase tracking-[0.08em] font-medium text-meta">
           <span className="text-ink normal-case tracking-normal text-[14px]">{block.title}</span>
           {(() => {
-            const label = activity.type === "exercise" ? PHASE_LABEL[activity.phase] : activity.type === "theory" ? "Theory" : activity.type === "puzzle" ? "Puzzle" : "Reflect";
+            const label = activity.type === "exercise" ? PHASE_LABEL[activity.phase] : activity.type === "theory" ? "Theory" : "Puzzle";
             return block.title.startsWith(label) ? null : (
               <>
                 <span aria-hidden>·</span>
@@ -185,16 +183,6 @@ export function LessonPlayer() {
             onHint={askHint}
             onDone={async () => {
               await post({ action: "theory", nodeId: node.id }).catch(() => {});
-              advance();
-            }}
-          />
-        )}
-        {activity.type === "reflect" && (
-          <ReflectView
-            key={contextKey}
-            onDone={async (text) => {
-              if (text.trim()) await post({ action: "reflect", text }).catch(() => {});
-              skipped.current.add(keyOf(activity));
               advance();
             }}
           />

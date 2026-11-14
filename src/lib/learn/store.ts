@@ -45,10 +45,6 @@ export async function markTheoryDone(userId: number, nodeId: string) {
   await checkMastery(userId, nodeId);
 }
 
-export async function saveReflection(userId: number, text: string) {
-  if (text.trim()) await sql("INSERT INTO reflections (user_id, text) VALUES ($1, $2)", [userId, text.trim().slice(0, 2000)]);
-}
-
 function reviveCard(raw: Record<string, unknown>): Card {
   return TypeConvert.card(raw as never);
 }
