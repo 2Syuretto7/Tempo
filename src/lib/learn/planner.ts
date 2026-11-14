@@ -17,13 +17,23 @@ export type Activity =
   | { type: "theory"; nodeId: string }
   | { type: "explain"; nodeId: string }
   | { type: "reflect"; nodeId: string }
-  | { type: "exercise"; nodeId: string; itemId: string; seed: number; phase: Phase };
+  | { type: "exercise"; nodeId: string; itemId: string; seed: number; phase: Phase }
+  /** A real puzzle from the Puzzles room, chosen when it is reached; nodeId is nominal. */
+  | { type: "puzzle"; nodeId: string; index: number };
 
-export type Block = { title: string; kind: "review" | "repair" | "consolidate" | "new" | "continue"; nodeId?: string; activities: Activity[] };
+export type Block = { title: string; kind: "review" | "repair" | "consolidate" | "new" | "continue" | "puzzles"; nodeId?: string; activities: Activity[] };
 
 export type Plan = { blocks: Block[]; headline: string; done: boolean };
 
-export type LearnerState = { now: Date; nodes: NodeState[]; attempts: Attempt[]; dueCards: DueCard[]; seed?: () => number };
+export type LearnerState = {
+  now: Date;
+  nodes: NodeState[];
+  attempts: Attempt[];
+  dueCards: DueCard[];
+  /** Whether the Puzzles room is open, and how many puzzles were finished today. */
+  puzzles?: { open: boolean; doneToday: number };
+  seed?: () => number;
+};
 
 export const RULES = {
   maxReviews: 8,
@@ -34,6 +44,7 @@ export const RULES = {
   masteryCorrect: 7, // 7 of the last 8 hint-free attempts: 87.5%
   masteryDays: 2,
   newNodesPerDay: 1,
+  puzzlesPerDay: 5,
   timeZone: "Asia/Kolkata",
 };
 
@@ -178,9 +189,19 @@ export function plan(state: LearnerState): Plan {
     }
   }
 
+  // Real puzzles, mixed across every theme you have mastered: retrieval in a fresh setting.
+  const puzzlesLeft = state.puzzles?.open ? RULES.puzzlesPerDay - state.puzzles.doneToday : 0;
+  if (puzzlesLeft > 0) {
+    blocks.push({
+      title: "Puzzles",
+      kind: "puzzles",
+      activities: Array.from({ length: puzzlesLeft }, (_, index) => ({ type: "puzzle", nodeId: "chess.checkmate", index })),
+    });
+  }
+
   // 4. At most one new idea per day.
   const startedTodayCount = nodes.filter((n) => localDay(n.startedAt) === today).length;
-  const pendingWork = blocks.some((b) => b.kind !== "review");
+  const pendingWork = blocks.some((b) => b.kind !== "review" && b.kind !== "puzzles");
   if (startedTodayCount < RULES.newNodesPerDay && !pendingWork) {
     const next = chooseNext(nodes);
     if (next) blocks.push(newNodeBlock(next, mastered, seed));
@@ -216,6 +237,8 @@ function describe(blocks: Block[], nodes: NodeState[], now: Date): string {
   const parts: string[] = [];
   const reviews = blocks.filter((b) => b.kind === "review").reduce((n, b) => n + b.activities.length, 0);
   if (reviews) parts.push(`${reviews} review${reviews === 1 ? "" : "s"}`);
+  const puzzles = blocks.filter((b) => b.kind === "puzzles").reduce((n, b) => n + b.activities.length, 0);
+  if (puzzles) parts.push(`${puzzles} puzzle${puzzles === 1 ? "" : "s"}`);
   const repair = blocks.filter((b) => b.kind === "repair");
   if (repair.length) parts.push(`a repair of ${repair.map((b) => getNode(b.nodeId!).title.toLowerCase()).join(" and ")}`);
   const cont = blocks.filter((b) => b.kind === "continue" || b.kind === "consolidate");

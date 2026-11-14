@@ -21,3 +21,7 @@ npm run check   # types, lint, and tests (every lesson position and answer is ve
 ## Deploy
 
 Vercel, with a Neon Postgres database from the Vercel Storage tab and `ANTHROPIC_API_KEY` set. See `.env.example`.
+
+## Puzzles
+
+`data/puzzles.csv` holds about 32,500 puzzles chosen from the [Lichess open puzzle database](https://database.lichess.org/#puzzles) (CC0). To refresh it, run the "Refresh puzzle set" workflow in GitHub Actions; it downloads the database, runs `scripts/select_puzzles.py` and commits the result. A puzzle appears only when every theme it carries belongs to a mastered node (`src/lib/puzzles/themes.ts`).

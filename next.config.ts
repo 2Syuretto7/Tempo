@@ -9,6 +9,8 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  // The puzzle set is read from disk at runtime (Home, Learn, Puzzles and Kibitzer use it).
+  outputFileTracingIncludes: { "/**": ["./data/puzzles.csv"] },
   serverExternalPackages: ["@node-rs/argon2", "@electric-sql/pglite"],
   async headers() {
     return [

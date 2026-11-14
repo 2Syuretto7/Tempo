@@ -11,6 +11,7 @@ import { ExplainView } from "./ExplainView";
 import { Kibitzer, type KibitzerTarget } from "./Kibitzer";
 import { ReflectView } from "./ReflectView";
 import { TheoryView } from "./TheoryView";
+import { PuzzleView, type ClientPuzzle } from "@/components/puzzles/PuzzleView";
 
 type Entry = { block: Block; activity: Activity };
 
@@ -29,7 +30,9 @@ const post = (body: unknown) =>
   });
 
 function keyOf(a: Activity) {
-  return a.type === "exercise" ? `${a.type}:${a.itemId}:${a.seed}` : `${a.type}:${a.nodeId}`;
+  if (a.type === "exercise") return `${a.type}:${a.itemId}:${a.seed}`;
+  if (a.type === "puzzle") return `puzzle:${a.index}`;
+  return `${a.type}:${a.nodeId}`;
 }
 
 export function LessonPlayer() {
@@ -42,6 +45,7 @@ export function LessonPlayer() {
   const [hintSignal, setHintSignal] = useState(0);
   const [theoryStep, setTheoryStep] = useState(0);
   const [completed, setCompleted] = useState(0);
+  const [puzzleAt, setPuzzleAt] = useState<{ id: string; ply: number } | null>(null);
   const skipped = useRef(new Set<string>());
   const started = useRef(new Set<string>());
   const outcome = useRef<{ correct: boolean; firstTry: boolean } | null>(null);
@@ -95,6 +99,7 @@ export function LessonPlayer() {
   const advance = useCallback(async () => {
     setHints(0);
     setTheoryStep(0);
+    setPuzzleAt(null);
     outcome.current = null;
     setCompleted((c) => c + 1);
     if (queue && index + 1 < queue.length) setIndex(index + 1);
@@ -112,11 +117,12 @@ export function LessonPlayer() {
   const target: KibitzerTarget | null = useMemo(() => {
     if (!entry) return null;
     const a = entry.activity;
+    if (a.type === "puzzle") return puzzleAt ? { nodeId: "", puzzleId: puzzleAt.id, ply: puzzleAt.ply } : null;
     if (a.type === "exercise") return { nodeId: a.nodeId, itemId: a.itemId, seed: a.seed };
     if (a.type === "theory") return { nodeId: a.nodeId, step: theoryStep };
     if (a.type === "explain") return { nodeId: a.nodeId, purpose: "explain" };
     return { nodeId: a.nodeId };
-  }, [entry, theoryStep]);
+  }, [entry, theoryStep, puzzleAt]);
 
   const askHint = () => setHintSignal((s) => s + 1);
 
@@ -154,7 +160,7 @@ export function LessonPlayer() {
         <div className="flex items-center gap-3 text-[12px] uppercase tracking-[0.08em] font-medium text-meta">
           <span className="text-ink normal-case tracking-normal text-[14px]">{block.title}</span>
           {(() => {
-            const label = activity.type === "exercise" ? PHASE_LABEL[activity.phase] : activity.type === "theory" ? "Theory" : activity.type === "explain" ? "Explain" : "Reflect";
+            const label = activity.type === "exercise" ? PHASE_LABEL[activity.phase] : activity.type === "theory" ? "Theory" : activity.type === "explain" ? "Explain" : activity.type === "puzzle" ? "Puzzle" : "Reflect";
             return block.title.startsWith(label) ? null : (
               <>
                 <span aria-hidden>·</span>
@@ -207,6 +213,19 @@ export function LessonPlayer() {
             }}
           />
         )}
+        {activity.type === "puzzle" && (
+          <LearnPuzzle
+            key={contextKey}
+            hints={hints}
+            onHint={askHint}
+            onPly={(id, ply) => setPuzzleAt({ id, ply })}
+            onSkip={() => {
+              skipped.current.add(keyOf(activity));
+              advance();
+            }}
+            onContinue={advance}
+          />
+        )}
         {activity.type === "exercise" && exercise && (
           <ExerciseView
             key={contextKey}
@@ -226,6 +245,27 @@ export function LessonPlayer() {
       <Kibitzer key={contextKey} target={target} open={kOpen} setOpen={setKOpen} hintSignal={hintSignal} onUse={() => setHints((h) => h + 1)} />
     </div>
   );
+}
+
+function LearnPuzzle({ hints, onHint, onPly, onSkip, onContinue }: { hints: number; onHint: () => void; onPly: (id: string, ply: number) => void; onSkip: () => void; onContinue: () => void }) {
+  const [puzzle, setPuzzle] = useState<ClientPuzzle | null>(null);
+  useEffect(() => {
+    let live = true;
+    fetch("/api/puzzles/next", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (!live) return;
+        if (d?.puzzle) setPuzzle(d.puzzle);
+        else onSkip();
+      })
+      .catch(() => live && onSkip());
+    return () => {
+      live = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  if (!puzzle) return null;
+  return <PuzzleView puzzle={puzzle} hints={hints} onHint={onHint} onPly={(ply) => onPly(puzzle.id, ply)} continueLabel="Continue" onContinue={onContinue} />;
 }
 
 function Centered({ children }: { children: React.ReactNode }) {

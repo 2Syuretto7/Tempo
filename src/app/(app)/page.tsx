@@ -2,14 +2,13 @@ import Link from "next/link";
 import { NODES } from "@/curriculum";
 import { STAGE_NAMES } from "@/curriculum/types";
 import { requireUser } from "@/lib/auth";
-import { plan, statuses } from "@/lib/learn/planner";
-import { loadState } from "@/lib/learn/store";
+import { statuses } from "@/lib/learn/planner";
+import { todaysPlan } from "@/lib/learn/today";
 import { Burn } from "@/components/ui/Burn";
 
 export default async function Home() {
   const userId = await requireUser();
-  const state = await loadState(userId);
-  const p = plan({ now: new Date(), ...state });
+  const { state, plan: p } = await todaysPlan(userId);
   const st = statuses(state.nodes);
   const stage = Math.min(...NODES.filter((n) => st.get(n.id) !== "mastered").map((n) => n.stage), STAGE_NAMES.length - 1);
   const inStage = NODES.filter((n) => n.stage === stage);

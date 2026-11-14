@@ -9,6 +9,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <Link href="/" aria-label="Tempo home">
           <Wordmark />
         </Link>
+        <nav className="ml-6 md:ml-10 flex items-center gap-1 md:gap-4 text-[14px] font-medium" aria-label="Rooms">
+          <Link href="/puzzles" className="h-8 px-2 inline-flex items-center text-meta hover:text-ink transition-colors">
+            Puzzles
+          </Link>
+          <Link href="/train" className="h-8 px-2 inline-flex items-center text-meta hover:text-ink transition-colors">
+            Train
+          </Link>
+        </nav>
         <form action={signOutAction} className="ml-auto">
           <button className="h-8 px-2 text-[14px] font-medium text-meta hover:text-ink transition-colors">Sign out</button>
         </form>
